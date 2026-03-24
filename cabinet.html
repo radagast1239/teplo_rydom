@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Личный кабинет — Тепло рядом</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<!-- Резерв, если site-config.js не подгрузился. При смене API правьте и site-config.js -->
+<script>
+(function () {
+  var fb = "https://teplo-ryadom-api-production.up.railway.app";
+  window.TR_API_BASE = fb;
+  window.resolveTeploApiBase = function () {
+    var t = typeof window.TR_API_BASE === "string" ? window.TR_API_BASE.trim() : "";
+    return (t || fb).replace(/\/$/, "");
+  };
+})();
+</script>
+<script src="site-config.js?v=4"></script>
+<style>
+/* ── TOKENS ── */
+:root {
+  --font-display:'Cormorant Garamond',Georgia,serif;
+  --font-body:'Jost','Helvetica Neue',sans-serif;
+  --text-xs:clamp(0.75rem,0.7rem + 0.25vw,0.875rem);
+  --text-sm:clamp(0.875rem,0.8rem + 0.35vw,1rem);
+  --text-base:clamp(1rem,0.95rem + 0.25vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + 0.75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+  --space-1:0.25rem;--space-2:0.5rem;--space-3:0.75rem;
+  --space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;
+  --space-8:2rem;--space-10:2.5rem;--space-12:3rem;
+  --space-16:4rem;--space-20:5rem;
+  --radius-sm:0.375rem;--radius-md:0.625rem;
+  --radius-lg:1rem;--radius-xl:1.5rem;--radius-full:9999px;
+  --transition:200ms cubic-bezier(0.16,1,0.3,1);
+  --color-bg:#fdf8f5;--color-surface:#fff9f6;
+  --color-surface-2:#fffcfa;--color-surface-offset:#f8eeea;
+  --color-divider:#edddd8;--color-border:#e5d4ce;
+  --color-text:#2e1f1a;--color-text-muted:#7a5e57;
+  --color-text-faint:#b89b94;--color-text-inverse:#fff9f6;
+  --color-primary:#9b4f40;--color-primary-hover:#7e3c30;
+  --color-primary-active:#622e24;--color-primary-hl:#f2deda;
+  --color-rose:#c8877a;--color-rose-light:#f0cdc8;
+  --color-rose-lighter:#f8ecea;--color-gold:#c8923d;
+  --shadow-sm:0 1px 3px oklch(0.25 0.06 20/0.06);
+  --shadow-md:0 4px 16px oklch(0.25 0.06 20/0.09);
+  --shadow-lg:0 12px 40px oklch(0.25 0.06 20/0.13);
+  --content-default:980px;--content-wide:1200px;
+}
+[data-theme="dark"] {
+  --color-bg:#1a1210;--color-surface:#201714;
+  --color-surface-2:#251c18;--color-surface-offset:#1e1511;
+  --color-divider:#2e201c;--color-border:#3a2620;
+  --color-text:#e8d8d2;--color-text-muted:#a08078;
+  --color-text-faint:#6a4f48;--color-text-inverse:#1a1210;
+  --color-primary:#d47c6c;--color-primary-hover:#e8917e;
+  --color-primary-active:#f0a493;--color-primary-hl:#3d2420;
+  --color-rose:#c47f72;--color-rose-light:#4a2e28;
+  --color-rose-lighter:#2e1c18;--color-gold:#d4a05a;
+  --shadow-sm:0 1px 3px oklch(0 0 0/0.25);
+  --shadow-md:0 4px 16px oklch(0 0 0/0.35);
+  --shadow-lg:0 12px 40px oklch(0 0 0/0.45);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+body{font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);min-height:100dvh;line-height:1.65;overflow-x:hidden;}
+img,svg{display:block;max-width:100%;height:auto;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
+h1,h2,h3,h4{text-wrap:balance;line-height:1.2;}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--color-bg) 92%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--color-divider);box-shadow:var(--shadow-sm);}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding-block:var(--space-4);max-width:var(--content-wide);margin-inline:auto;padding-inline:var(--space-6);gap:var(--space-4);}
+.logo{display:flex;align-items:center;gap:var(--space-3);}
+.logo-icon{color:var(--color-primary);}
+.logo-text .name{font-family:var(--font-display);font-size:var(--text-lg);font-weight:600;color:var(--color-text);line-height:1;}
+.logo-text .tagline{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:400;margin-top:2px;}
+.header-actions{display:flex;align-items:center;gap:var(--space-3);}
+.burger{display:none;flex-direction:column;gap:5px;width:44px;height:44px;align-items:center;justify-content:center;border-radius:var(--radius-full);}
+.burger span{display:block;width:22px;height:1.5px;background:var(--color-text);border-radius:2px;transition:transform var(--transition),opacity var(--transition);}
+.burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-nav{display:none;position:fixed;inset:0;top:65px;z-index:95;background:var(--color-bg);padding:var(--space-6);flex-direction:column;gap:var(--space-4);border-top:1px solid var(--color-divider);}
+.mobile-nav.open{display:flex;}
+.mobile-nav a,.mobile-nav button{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-base);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);background:var(--color-surface-offset);}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-6);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:500;font-family:var(--font-body);transition:all var(--transition);white-space:nowrap;cursor:pointer;}
+.btn--primary{background:var(--color-primary);color:var(--color-text-inverse);box-shadow:0 2px 8px oklch(from var(--color-primary) l c h/0.3);}
+.btn--primary:hover{background:var(--color-primary-hover);transform:translateY(-1px);}
+.btn--outline{background:transparent;color:var(--color-primary);border:1.5px solid var(--color-rose);}
+.btn--outline:hover{background:var(--color-rose-lighter);}
+.btn--ghost{background:var(--color-rose-lighter);color:var(--color-primary);}
+.btn--ghost:hover{background:var(--color-primary-hl);}
+.btn--sm{padding:var(--space-2) var(--space-4);font-size:var(--text-xs);}
+.btn--full{width:100%;justify-content:center;}
+.btn--icon{width:40px;height:40px;padding:0;justify-content:center;align-items:center;border-radius:var(--radius-full);background:var(--color-surface-offset);color:var(--color-text-muted);}
+.btn--icon:hover{background:var(--color-primary-hl);color:var(--color-primary);}
+
+/* ── LAYOUT ── */
+.page-wrap{max-width:var(--content-wide);margin-inline:auto;padding:var(--space-8) var(--space-6);display:grid;grid-template-columns:280px 1fr;gap:var(--space-8);align-items:start;}
+
+/* ── AUTH SCREEN ── */
+.auth-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100dvh - 73px);padding:var(--space-8) var(--space-6);}
+.auth-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-8) var(--space-10);max-width:480px;width:100%;box-shadow:var(--shadow-md);}
+.auth-logo{text-align:center;margin-bottom:var(--space-8);}
+.auth-logo h1{font-family:var(--font-display);font-size:var(--text-xl);font-weight:600;color:var(--color-text);}
+.auth-logo p{font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-2);}
+.auth-tabs{display:flex;background:var(--color-surface-offset);border-radius:var(--radius-full);padding:4px;gap:4px;margin-bottom:var(--space-6);}
+.auth-tab{flex:1;padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:500;cursor:pointer;text-align:center;color:var(--color-text-muted);transition:all var(--transition);}
+.auth-tab.active{background:var(--color-surface);color:var(--color-text);box-shadow:var(--shadow-sm);}
+
+/* Role selector */
+.role-select{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-bottom:var(--space-5);}
+.role-btn{padding:var(--space-4);border-radius:var(--radius-lg);border:2px solid var(--color-border);background:transparent;cursor:pointer;text-align:center;transition:all var(--transition);}
+.role-btn:hover{border-color:var(--color-rose);}
+.role-btn.selected{border-color:var(--color-primary);background:var(--color-primary-hl);}
+.role-btn .role-icon{font-size:1.8rem;margin-bottom:var(--space-2);}
+.role-btn .role-label{font-size:var(--text-sm);font-weight:600;color:var(--color-text);}
+.role-btn .role-desc{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px;}
+
+/* Form */
+.form-group{margin-bottom:var(--space-4);}
+.form-label{display:block;font-size:var(--text-sm);font-weight:500;color:var(--color-text-muted);margin-bottom:var(--space-2);}
+.form-input{width:100%;padding:var(--space-3) var(--space-4);border:1.5px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);color:var(--color-text);font:var(--text-sm) var(--font-body);transition:border-color var(--transition),box-shadow var(--transition);}
+.form-input:focus{outline:none;border-color:var(--color-rose);box-shadow:0 0 0 3px oklch(from var(--color-rose) l c h/0.15);}
+.form-input::placeholder{color:var(--color-text-faint);}
+.form-divider{text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);margin:var(--space-4) 0;position:relative;}
+.form-divider::before,.form-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--color-divider);}
+.form-divider::before{left:0;}
+.form-divider::after{right:0;}
+.auth-hint{text-align:center;font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-4);}
+.auth-hint span{color:var(--color-primary);cursor:pointer;font-weight:500;}
+.auth-hint span:hover{text-decoration:underline;}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm);}
+.user-banner{height:80px;background:linear-gradient(135deg,var(--color-rose-lighter),var(--color-rose-light) 60%,var(--color-primary-hl));position:relative;}
+.user-avatar{width:80px;height:80px;border-radius:50%;background:var(--color-surface-offset);border:4px solid var(--color-surface);position:absolute;bottom:-40px;left:var(--space-6);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.6rem;font-weight:600;color:var(--color-primary);}
+.user-info{padding:var(--space-14) var(--space-6) var(--space-5);}
+.user-name{font-family:var(--font-display);font-size:var(--text-lg);font-weight:600;color:var(--color-text);}
+.user-role-badge{display:inline-flex;align-items:center;gap:4px;font-size:var(--text-xs);font-weight:500;padding:3px 10px;border-radius:var(--radius-full);margin-top:var(--space-2);}
+.badge--client{background:var(--color-primary-hl);color:var(--color-primary);}
+.badge--helper{background:#e8f5e9;color:#2e7d32;}
+[data-theme="dark"] .badge--helper{background:#1b3a1d;color:#81c784;}
+.sidebar-nav{border-top:1px solid var(--color-divider);padding:var(--space-3) 0;}
+.sidebar-nav a{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-6);font-size:var(--text-sm);color:var(--color-text-muted);font-weight:500;transition:all var(--transition);position:relative;}
+.sidebar-nav a:hover{color:var(--color-text);background:var(--color-surface-offset);}
+.sidebar-nav a.active{color:var(--color-primary);background:var(--color-primary-hl);}
+.sidebar-nav a.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--color-primary);border-radius:0 2px 2px 0;}
+.sidebar-nav a svg{flex-shrink:0;}
+.sidebar-bottom{border-top:1px solid var(--color-divider);padding:var(--space-4) var(--space-6);}
+
+/* ── MAIN CONTENT ── */
+.main-content{min-width:0;}
+.content-panel{display:none;}
+.content-panel.active{display:block;}
+.panel-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:600;color:var(--color-text);margin-bottom:var(--space-6);}
+.panel-title small{display:block;font-family:var(--font-body);font-size:var(--text-sm);color:var(--color-text-muted);font-weight:400;margin-top:var(--space-1);}
+
+/* ── PROFILE EDIT ── */
+.profile-section{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);margin-bottom:var(--space-5);}
+.profile-section h3{font-size:var(--text-base);font-weight:600;color:var(--color-text);margin-bottom:var(--space-4);display:flex;align-items:center;gap:var(--space-2);}
+.profile-section h3 svg{color:var(--color-rose);}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:var(--space-2);}
+.skill-toggle{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);border-radius:var(--radius-md);border:1.5px solid var(--color-border);cursor:pointer;transition:all var(--transition);background:transparent;}
+.skill-toggle:hover{border-color:var(--color-rose);}
+.skill-toggle.checked{border-color:var(--color-primary);background:var(--color-primary-hl);}
+.skill-toggle input[type=checkbox]{accent-color:var(--color-primary);width:16px;height:16px;flex-shrink:0;}
+.skill-toggle span{font-size:var(--text-xs);font-weight:500;color:var(--color-text-muted);}
+.skill-toggle.checked span{color:var(--color-primary);}
+
+/* ── ORDERS ── */
+.orders-list{display:flex;flex-direction:column;gap:var(--space-4);}
+.order-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm);}
+.order-header{display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6);border-bottom:1px solid var(--color-divider);background:var(--color-surface-offset);}
+.order-header-left{display:flex;align-items:center;gap:var(--space-3);}
+.order-number{font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);}
+.status-badge{padding:3px 10px;border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:600;}
+.status--active{background:#e8f5e9;color:#2e7d32;}
+.status--pending{background:#fff8e1;color:#f57f17;}
+.status--done{background:var(--color-surface-offset);color:var(--color-text-muted);}
+[data-theme="dark"] .status--active{background:#1b3a1d;color:#81c784;}
+[data-theme="dark"] .status--pending{background:#3a2e00;color:#ffd54f;}
+.order-body{padding:var(--space-5) var(--space-6);}
+.order-meta{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-bottom:var(--space-4);}
+.order-meta-item{display:flex;flex-direction:column;gap:2px;}
+.order-meta-item .label{font-size:var(--text-xs);color:var(--color-text-faint);font-weight:500;text-transform:uppercase;letter-spacing:.5px;}
+.order-meta-item .value{font-size:var(--text-sm);color:var(--color-text);font-weight:500;}
+.order-services{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-4);}
+.service-tag{padding:3px 10px;background:var(--color-rose-lighter);border-radius:var(--radius-full);font-size:var(--text-xs);color:var(--color-text-muted);}
+
+/* Important notes */
+.important-box{background:var(--color-surface-offset);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-4);}
+.important-box h4{font-size:var(--text-xs);font-weight:600;color:var(--color-text);text-transform:uppercase;letter-spacing:.5px;margin-bottom:var(--space-2);display:flex;align-items:center;gap:var(--space-2);}
+.important-box h4 svg{color:var(--color-gold);}
+.important-note{font-size:var(--text-xs);color:var(--color-text-muted);padding:var(--space-2);background:var(--color-surface);border-radius:var(--radius-sm);border-left:3px solid var(--color-gold);margin-bottom:var(--space-2);}
+.important-note:last-child{margin-bottom:0;}
+.important-add{display:flex;gap:var(--space-2);margin-top:var(--space-3);}
+.important-add input{flex:1;padding:var(--space-2) var(--space-3);border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:var(--text-xs);font-family:var(--font-body);background:var(--color-surface);color:var(--color-text);}
+.important-add input:focus{outline:none;border-color:var(--color-rose);}
+
+/* Chat preview */
+.chat-link{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);font-size:var(--text-sm);color:var(--color-text-muted);transition:all var(--transition);margin-bottom:var(--space-4);}
+.chat-link:hover{border-color:var(--color-rose);color:var(--color-text);}
+.chat-link svg{color:var(--color-rose);}
+
+/* Order actions */
+.order-actions{display:flex;gap:var(--space-3);flex-wrap:wrap;}
+
+/* Reschedule modal */
+.modal-backdrop{position:fixed;inset:0;background:oklch(0 0 0/0.45);z-index:500;display:none;align-items:center;justify-content:center;padding:var(--space-6);}
+.modal-backdrop.open{display:flex;}
+.modal{background:var(--color-surface);border-radius:var(--radius-xl);padding:var(--space-8);max-width:460px;width:100%;position:relative;box-shadow:var(--shadow-lg);}
+.modal h2{font-family:var(--font-display);font-size:var(--text-xl);font-weight:600;margin-bottom:var(--space-5);}
+.modal-close{position:absolute;top:var(--space-4);right:var(--space-4);width:36px;height:36px;border-radius:50%;background:var(--color-surface-offset);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);cursor:pointer;border:none;transition:all var(--transition);}
+.modal-close:hover{background:var(--color-primary-hl);color:var(--color-primary);}
+
+/* Map placeholder */
+.map-placeholder{background:var(--color-surface-offset);border:2px dashed var(--color-border);border-radius:var(--radius-xl);height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-3);color:var(--color-text-muted);margin-bottom:var(--space-6);}
+.map-placeholder svg{color:var(--color-rose-light);}
+.map-placeholder p{font-size:var(--text-sm);text-align:center;max-width:240px;}
+
+/* Search filters */
+.search-filters{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);margin-bottom:var(--space-6);}
+.search-filters h3{font-size:var(--text-sm);font-weight:600;color:var(--color-text);margin-bottom:var(--space-4);display:flex;align-items:center;gap:var(--space-2);}
+.filter-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--space-2);}
+.filter-check{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--color-text-muted);cursor:pointer;padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);transition:background var(--transition);}
+.filter-check:hover{background:var(--color-surface-offset);}
+.filter-check input{accent-color:var(--color-primary);}
+.filter-check.checked{color:var(--color-primary);font-weight:500;}
+.search-btn-row{display:flex;gap:var(--space-3);margin-top:var(--space-4);}
+
+/* Helper cards */
+.helpers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--space-4);}
+.helper-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm);transition:all var(--transition);}
+.helper-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.helper-card-top{height:60px;background:linear-gradient(135deg,var(--color-rose-lighter),var(--color-primary-hl));position:relative;}
+.helper-avatar{width:68px;height:68px;border-radius:50%;background:var(--color-surface-offset);border:3px solid var(--color-surface);position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.4rem;font-weight:600;color:var(--color-primary);}
+.helper-body{padding:var(--space-10) var(--space-5) var(--space-5);text-align:center;}
+.helper-name{font-family:var(--font-display);font-size:var(--text-base);font-weight:600;color:var(--color-text);}
+.helper-rating{display:inline-flex;align-items:center;gap:4px;font-size:var(--text-xs);font-weight:600;color:var(--color-gold);margin:var(--space-2) 0;}
+.helper-rating svg{color:var(--color-gold);}
+.helper-tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-bottom:var(--space-4);}
+.helper-tag{padding:2px 8px;background:var(--color-rose-lighter);border-radius:var(--radius-full);font-size:10px;color:var(--color-text-muted);}
+.online-dot{width:10px;height:10px;border-radius:50%;background:#4caf50;display:inline-block;margin-right:4px;flex-shrink:0;}
+
+/* Toast */
+.toast{position:fixed;bottom:var(--space-8);left:50%;z-index:600;transform:translateX(-50%) translateY(20px);background:var(--color-text);color:var(--color-text-inverse);padding:var(--space-3) var(--space-6);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:500;display:flex;align-items:center;gap:var(--space-3);box-shadow:var(--shadow-lg);pointer-events:none;opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast svg{color:var(--color-rose);}
+
+/* Responsive */
+@media(max-width:860px){
+  .page-wrap{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .sidebar.mobile-open{display:block;}
+}
+.cabinet-chat-wrap .chat-thread-list{border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-surface);max-height:420px;overflow:auto;}
+.cabinet-chat-wrap .chat-thread-item{display:block;width:100%;text-align:left;padding:var(--space-3);border-bottom:1px solid var(--color-divider);background:transparent;border:none;font:inherit;cursor:pointer;color:var(--color-text);}
+.cabinet-chat-wrap .chat-thread-item:hover,.cabinet-chat-wrap .chat-thread-item.is-active{background:var(--color-surface-offset);}
+.cabinet-chat-wrap .chat-messages{border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-4);max-height:320px;overflow:auto;margin-bottom:var(--space-3);background:var(--color-surface);}
+.cabinet-chat-wrap .cab-bubble{max-width:90%;padding:var(--space-3);border-radius:var(--radius-md);margin-bottom:var(--space-3);font-size:var(--text-sm);}
+.cabinet-chat-wrap .cab-bubble--me{margin-left:auto;background:var(--color-primary-hl);}
+.cabinet-chat-wrap .cab-bubble--in{margin-right:auto;background:var(--color-surface-offset);border:1px solid var(--color-divider);}
+.cabinet-chat-wrap .cab-meta{font-size:0.7rem;color:var(--color-text-muted);margin-bottom:4px;}
+.cabinet-chat-wrap textarea{width:100%;min-height:72px;padding:var(--space-3);border:1.5px solid var(--color-border);border-radius:var(--radius-md);font:inherit;resize:vertical;}
+@media(max-width:600px){
+  .header-inner{padding-inline:var(--space-4);}
+  .header-actions .btn--ghost{display:none;}
+  .logo-text .tagline{display:none;}
+  .burger{display:flex;}
+  .auth-card{padding:var(--space-6);}
+  .helpers-grid{grid-template-columns:1fr 1fr;}
+  .order-meta{grid-template-columns:1fr;}
+  .cabinet-chat-wrap{grid-template-columns:1fr!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" width="32" height="32" viewBox="0 0 36 36" fill="none">
+        <path d="M18 31S5 23 5 14a7 7 0 0 1 13-3.5A7 7 0 0 1 31 14c0 9-13 17-13 17Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="logo-text">
+        <div class="name">Тепло рядом</div>
+        <div class="tagline">Личный кабинет</div>
+      </div>
+    </a>
+    <div class="header-actions">
+      <button class="btn btn--icon" id="themeToggle" aria-label="Тема">
+        <i data-lucide="sun" width="18" height="18"></i>
+      </button>
+      <a href="index.html" class="btn btn--ghost btn--sm">
+        <i data-lucide="arrow-left" width="14" height="14"></i>
+        На главную
+      </a>
+      <button class="burger" id="burgerBtn" aria-label="Меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<nav class="mobile-nav" id="mobileNav" aria-label="Мобильная навигация">
+  <a href="index.html" onclick="closeMobileNav()">
+    <i data-lucide="house" width="16" height="16"></i>
+    На главную
+  </a>
+  <a href="order.html" onclick="closeMobileNav()">
+    <i data-lucide="heart" width="16" height="16"></i>
+    Оформить заказ
+  </a>
+  <a href="admin.html" onclick="closeMobileNav()">
+    <i data-lucide="shield" width="16" height="16"></i>
+    Админка
+  </a>
+</nav>
+
+<!-- ── AUTH SCREEN (показывается если не залогинен) ── -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <svg width="48" height="48" viewBox="0 0 36 36" fill="none" style="margin:0 auto var(--space-3)">
+        <path d="M18 31S5 23 5 14a7 7 0 0 1 13-3.5A7 7 0 0 1 31 14c0 9-13 17-13 17Z" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h1>Тепло рядом</h1>
+      <p>Войди в свой кабинет или создай аккаунт</p>
+    </div>
+
+    <!-- Переключатель Войти / Зарегистрироваться -->
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Войти</div>
+      <div class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Зарегистрироваться</div>
+    </div>
+
+    <!-- Форма входа -->
+    <div id="formLogin">
+      <div class="form-group">
+        <label class="form-label">Телефон или email</label>
+        <input class="form-input" id="loginIdentifier" type="text" placeholder="+7 (999) 000-00-00 или email@mail.ru">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input class="form-input" id="loginPassword" type="password" placeholder="Введи пароль">
+      </div>
+      <button class="btn btn--primary btn--full" style="margin-bottom:var(--space-3);" onclick="doLogin()">
+        <i data-lucide="log-in" width="14" height="14"></i>
+        Войти
+      </button>
+      <p class="auth-hint">Нет аккаунта? <span onclick="switchAuthTab('register')">Зарегистрироваться</span></p>
+    </div>
+
+    <!-- Форма регистрации -->
+    <div id="formRegister" style="display:none;">
+      <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4);text-align:center;">Кто ты в нашем сервисе?</p>
+      <div class="role-select">
+        <button class="role-btn" id="roleClient" onclick="selectRole('client')">
+          <div class="role-icon">🌸</div>
+          <div class="role-label">Ищу помощь</div>
+          <div class="role-desc">Хочу получить заботу</div>
+        </button>
+        <button class="role-btn" id="roleHelper" onclick="selectRole('helper')">
+          <div class="role-icon">🤱</div>
+          <div class="role-label">Помогаю</div>
+          <div class="role-desc">Хочу стать помощницей</div>
+        </button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Имя</label>
+        <input class="form-input" id="registerName" type="text" placeholder="Как тебя зовут">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Телефон</label>
+        <input class="form-input" id="registerPhone" type="tel" placeholder="+7 (999) 000-00-00">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="registerEmail" type="email" placeholder="твой@email.ru">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input class="form-input" id="registerPassword" type="password" placeholder="Минимум 8 символов">
+      </div>
+      <button class="btn btn--primary btn--full" style="margin-bottom:var(--space-3);" onclick="doRegister()">
+        <i data-lucide="user-plus" width="14" height="14"></i>
+        Создать аккаунт
+      </button>
+      <p class="auth-hint">Уже есть аккаунт? <span onclick="switchAuthTab('login')">Войти</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ── КАБИНЕТ (показывается после входа) ── -->
+<div id="cabinetScreen" style="display:none;">
+  <div class="page-wrap">
+
+    <!-- Сайдбар -->
+    <aside class="sidebar">
+      <div class="user-banner"></div>
+      <div class="user-avatar" id="sidebarAvatar">АМ</div>
+      <div class="user-info">
+        <div class="user-name" id="sidebarName">Анна М.</div>
+        <div class="user-role-badge" id="sidebarBadge">Клиентка</div>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav">
+        <!-- nav items filled by JS -->
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="btn btn--ghost btn--sm btn--full" onclick="doLogout()">
+          <i data-lucide="log-out" width="14" height="14"></i>
+          Выйти
+        </button>
+      </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+
+      <!-- ── АНКЕТА КЛИЕНТКИ ── -->
+      <div class="content-panel active" id="panel-profile">
+        <h2 class="panel-title">
+          Моя анкета
+          <small>Заполни, чтобы помощнице было проще подготовиться</small>
+        </h2>
+        <div class="profile-section">
+          <h3><i data-lucide="user" width="16" height="16"></i> Личные данные</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="form-group">
+              <label class="form-label">Имя</label>
+              <input class="form-input" value="Анна" type="text">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Телефон</label>
+              <input class="form-input" value="+7 (912) 345-67-89" type="tel">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Адрес</label>
+              <input class="form-input" placeholder="ул. Цветочная, 12, кв. 34" type="text" style="grid-column:1/-1">
+            </div>
+          </div>
+        </div>
+        <div class="profile-section">
+          <h3><i data-lucide="alert-circle" width="16" height="16"></i> Важная информация</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4);">Укажи то, что важно знать помощнице перед визитом.</p>
+          <div id="profileNotes">
+            <div class="important-note">Аллергия на арахис</div>
+            <div class="important-note">Не звонить в домофон без предварительного звонка на телефон — спит ребёнок</div>
+          </div>
+          <div class="important-add">
+            <input type="text" placeholder="Добавить заметку..." id="newNoteInput">
+            <button class="btn btn--ghost btn--sm" onclick="addProfileNote()">
+              <i data-lucide="plus" width="14" height="14"></i>
+            </button>
+          </div>
+        </div>
+        <button class="btn btn--primary" onclick="saveProfile()">
+          <i data-lucide="save" width="14" height="14"></i>
+          Сохранить
+        </button>
+      </div>
+
+      <!-- ── МОИ ЗАКАЗЫ КЛИЕНТКИ ── -->
+      <div class="content-panel" id="panel-orders">
+        <h2 class="panel-title">
+          Мои заказы
+          <small>История и предстоящие визиты</small>
+        </h2>
+        <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4);">
+          Отмена бесплатна, если заказ на завтра или до начала визита сегодня больше 3 часов. Если меньше 3 часов - отмена платная.
+        </p>
+        <div class="orders-list">
+
+          <!-- Заказ 1 — Активный -->
+          <div class="order-card">
+            <div class="order-header">
+              <div class="order-header-left">
+                <span class="order-number">#2045</span>
+                <span class="status-badge status--active">Активный</span>
+              </div>
+              <span style="font-size:var(--text-xs);color:var(--color-text-muted);">25 марта 2026, 10:00</span>
+            </div>
+            <div class="order-body">
+              <div class="order-meta">
+                <div class="order-meta-item">
+                  <span class="label">Помощница</span>
+                  <span class="value">Мария Петрова</span>
+                </div>
+                <div class="order-meta-item">
+                  <span class="label">Тариф</span>
+                  <span class="value">Золотая середина</span>
+                </div>
+                <div class="order-meta-item">
+                  <span class="label">Адрес</span>
+                  <span class="value">ул. Цветочная, 12</span>
+                </div>
+                <div class="order-meta-item">
+                  <span class="label">Длительность</span>
+                  <span class="value">4 часа</span>
+                </div>
+              </div>
+              <div class="order-services">
+                <span class="service-tag">Готовка</span>
+                <span class="service-tag">Уборка</span>
+                <span class="service-tag">Поддержка ГВ</span>
+              </div>
+              <div class="important-box">
+                <h4><i data-lucide="star" width="12" height="12"></i> Важное для помощницы</h4>
+                <div class="important-note">Аллергия на арахис</div>
+                <div class="important-note">Не звонить в домофон</div>
+                <div class="important-add">
+                  <input type="text" placeholder="Добавить заметку для этого заказа..." id="note2045">
+                  <button class="btn btn--ghost btn--sm" onclick="addOrderNote('2045')"><i data-lucide="plus" width="14" height="14"></i></button>
+                </div>
+              </div>
+              <a class="chat-link" href="#" onclick="showToast('Чат открывается...')">
+                <i data-lucide="message-circle" width="16" height="16"></i>
+                Переписка с Марией Петровой
+                <i data-lucide="arrow-right" width="14" height="14" style="margin-left:auto;"></i>
+              </a>
+              <div class="order-actions">
+                <button class="btn btn--ghost btn--sm" onclick="openRescheduleModal('2045')">
+                  <i data-lucide="calendar" width="13" height="13"></i>
+                  Перенести встречу
+                </button>
+                <button class="btn btn--outline btn--sm" onclick="cancelOrder('2045', true)" style="color:var(--color-text-muted);border-color:var(--color-border);">
+                  <i data-lucide="x" width="13" height="13"></i>
+                  Отменить (бесплатно)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Заказ 2 — Завершён -->
+          <div class="order-card">
+            <div class="order-header">
+              <div class="order-header-left">
+                <span class="order-number">#2031</span>
+                <span class="status-badge status--done">Завершён</span>
+              </div>
+              <span style="font-size:var(--text-xs);color:var(--color-text-muted);">10 марта 2026</span>
+            </div>
+            <div class="order-body">
+              <div class="order-meta">
+                <div class="order-meta-item">
+                  <span class="label">Помощница</span>
+                  <span class="value">Ольга Сидорова</span>
+                </div>
+                <div class="order-meta-item">
+                  <span class="label">Тариф</span>
+                  <span class="value">Базовый минимум</span>
+                </div>
+              </div>
+              <div class="order-services">
+                <span class="service-tag">Уборка</span>
+                <span class="service-tag">Общение</span>
+              </div>
+              <div class="order-actions">
+                <button class="btn btn--ghost btn--sm" onclick="showToast('Спасибо за оценку! ⭐')">
+                  <i data-lucide="star" width="13" height="13"></i>
+                  Оставить отзыв
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── НАЙТИ ПОМОЩНИЦУ ── -->
+      <div class="content-panel" id="panel-search">
+        <h2 class="panel-title">
+          Найти помощницу
+          <small>Выбери нужные услуги и найди подходящую</small>
+        </h2>
+        <div class="profile-section" style="margin-bottom:var(--space-6);">
+          <h3><i data-lucide="shield-check" width="16" height="16"></i> Дежурные помощницы на линии</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);">
+            В системе всегда есть несколько активных дежурных, готовых взять заказ для бесперебойной работы сервиса.
+            Для дежурных отмена заказа доступна только по болезни.
+          </p>
+        </div>
+
+        <!-- Карта -->
+        <div class="map-placeholder">
+          <i data-lucide="map-pin" width="40" height="40"></i>
+          <p>Карта помощниц в вашем районе<br><span style="font-size:var(--text-xs);opacity:0.7;">Интеграция с картами будет подключена</span></p>
+        </div>
+
+        <!-- Фильтры -->
+        <div class="search-filters">
+          <h3><i data-lucide="sliders-horizontal" width="14" height="14"></i> Фильтр по услугам</h3>
+          <div class="filter-grid" id="filterGrid">
+            <!-- Filled by JS -->
+          </div>
+          <div class="search-btn-row">
+            <button class="btn btn--primary btn--sm" onclick="applySearch()">
+              <i data-lucide="search" width="13" height="13"></i>
+              Найти
+            </button>
+            <button class="btn btn--ghost btn--sm" onclick="resetFilters()">Сбросить</button>
+          </div>
+        </div>
+
+        <!-- Список помощниц -->
+        <div class="helpers-grid" id="helpersList"></div>
+      </div>
+
+      <!-- ── АНКЕТА ПОМОЩНИЦЫ ── -->
+      <div class="content-panel" id="panel-helper-profile">
+        <h2 class="panel-title">
+          Моя анкета помощницы
+          <small>Клиентки увидят это на странице исполнителей</small>
+        </h2>
+        <div class="profile-section">
+          <h3><i data-lucide="user" width="16" height="16"></i> Личные данные</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="form-group">
+              <label class="form-label">Имя</label>
+              <input class="form-input" value="Мария" type="text">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Телефон</label>
+              <input class="form-input" value="+7 (923) 456-78-90" type="tel">
+            </div>
+            <div class="form-group" style="grid-column:1/-1">
+              <label class="form-label">О себе (для анкеты)</label>
+              <textarea class="form-input" rows="3" placeholder="Расскажи о своём опыте и подходе к работе..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="profile-section">
+          <h3><i data-lucide="check-circle" width="16" height="16"></i> Мои умения</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4);">Отметь всё, что ты умеешь и готова делать</p>
+          <div class="skills-grid" id="helperSkillsGrid"></div>
+        </div>
+        <div class="profile-section">
+          <h3><i data-lucide="clock" width="16" height="16"></i> Доступность</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="form-group">
+              <label class="form-label">Время начала</label>
+              <input class="form-input" type="time" value="08:00">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Время окончания</label>
+              <input class="form-input" type="time" value="20:00">
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:var(--space-3);">
+            <label style="display:flex;align-items:center;gap:var(--space-3);cursor:pointer;font-size:var(--text-sm);">
+              <input type="checkbox" checked style="accent-color:var(--color-primary);width:18px;height:18px;">
+              <span>Я <strong>дежурная</strong> — гарантированно возьму экстренный заказ</span>
+            </label>
+          </div>
+        </div>
+        <button class="btn btn--primary" onclick="saveProfile()">
+          <i data-lucide="save" width="14" height="14"></i>
+          Сохранить анкету
+        </button>
+      </div>
+
+      <!-- ── МОИ ЗАКАЗЫ ПОМОЩНИЦЫ ── -->
+      <div class="content-panel" id="panel-helper-orders">
+        <h2 class="panel-title">
+          Мои заказы
+          <small>Предстоящие и выполненные</small>
+        </h2>
+        <div class="orders-list">
+          <div class="order-card">
+            <div class="order-header">
+              <div class="order-header-left">
+                <span class="order-number">#2045</span>
+                <span class="status-badge status--active">Предстоящий</span>
+              </div>
+              <span style="font-size:var(--text-xs);color:var(--color-text-muted);">25 марта 2026, 10:00</span>
+            </div>
+            <div class="order-body">
+              <div class="order-meta">
+                <div class="order-meta-item">
+                  <span class="label">Клиентка</span>
+                  <span class="value">Анна М.</span>
+                </div>
+                <div class="order-meta-item">
+                  <span class="label">Адрес</span>
+                  <span class="value">ул. Цветочная, 12</span>
+                </div>
+              </div>
+              <div class="order-services">
+                <span class="service-tag">Готовка</span>
+                <span class="service-tag">Уборка</span>
+                <span class="service-tag">Поддержка ГВ</span>
+              </div>
+              <div class="important-box">
+                <h4><i data-lucide="star" width="12" height="12"></i> Важное о клиентке</h4>
+                <div class="important-note">Аллергия на арахис</div>
+                <div class="important-note">Не звонить в домофон — спит ребёнок</div>
+                <div class="important-add">
+                  <input type="text" placeholder="Мои заметки об этой клиентке..." id="helperNote2045">
+                  <button class="btn btn--ghost btn--sm" onclick="addOrderNote('helper-2045')"><i data-lucide="plus" width="14" height="14"></i></button>
+                </div>
+              </div>
+              <a class="chat-link" href="#" onclick="showToast('Чат открывается...')">
+                <i data-lucide="message-circle" width="16" height="16"></i>
+                Переписка с Анной
+                <i data-lucide="arrow-right" width="14" height="14" style="margin-left:auto;"></i>
+              </a>
+              <div class="order-actions">
+                <button class="btn btn--ghost btn--sm" onclick="openRescheduleModal('2045')">
+                  <i data-lucide="calendar" width="13" height="13"></i>
+                  Перенести встречу
+                </button>
+                <button class="btn btn--outline btn--sm" onclick="cancelOrder('2045', false)" style="color:var(--color-text-muted);border-color:var(--color-border);">
+                  <i data-lucide="alert-triangle" width="13" height="13"></i>
+                  Отменить по болезни
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-panel" id="panel-messages">
+        <h2 class="panel-title">
+          Сообщения
+          <small>Переписка с клиентками и помощницами</small>
+        </h2>
+        <div class="cabinet-chat-wrap" style="display:grid;grid-template-columns:minmax(180px,240px) 1fr;gap:var(--space-4);">
+          <div id="cabinet-thread-list" class="chat-thread-list"></div>
+          <div>
+            <div id="cabinet-chat-messages" class="chat-messages" aria-live="polite"></div>
+            <div class="chat-composer" style="display:flex;flex-direction:column;gap:var(--space-2);">
+              <textarea id="cabinet-chat-input" placeholder="Введите сообщение…"></textarea>
+              <button type="button" class="btn btn--primary btn--sm" id="cabinet-chat-send" style="align-self:flex-start">Отправить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ── ПЕРЕНОС ВСТРЕЧИ MODAL ── -->
+<div class="modal-backdrop" id="rescheduleModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('rescheduleModal')">
+      <i data-lucide="x" width="16" height="16"></i>
+    </button>
+    <h2>Перенести встречу</h2>
+    <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-5);">
+      Выбери новую дату и время. Другая сторона получит уведомление и сможет подтвердить или отклонить перенос.
+    </p>
+    <div class="form-group">
+      <label class="form-label">Новая дата</label>
+      <input class="form-input" id="rescheduleDate" type="date">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Новое время</label>
+      <input class="form-input" id="rescheduleTime" type="time" value="10:00">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Комментарий (необязательно)</label>
+      <input class="form-input" id="rescheduleComment" type="text" placeholder="Причина переноса...">
+    </div>
+    <div style="display:flex;gap:var(--space-3);margin-top:var(--space-6);">
+      <button class="btn btn--primary btn--full" onclick="submitReschedule()">
+        <i data-lucide="send" width="14" height="14"></i>
+        Отправить запрос
+      </button>
+      <button class="btn btn--ghost btn--sm" onclick="closeModal('rescheduleModal')">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <i data-lucide="check-circle" width="16" height="16"></i>
+  <span id="toastText"></span>
+</div>
+
+<script>
+// ── DATA ──
+const ALL_SKILLS = [
+  'Готовка','Уборка','Мытьё посуды','Стирка','Глажка',
+  'Покупка продуктов','Уход за ребёнком','Купание малыша',
+  'Поддержка ГВ','Массаж','Лёгкий массаж','Выгул питомца',
+  'Эмоциональная поддержка','Психологическая поддержка',
+  'Заготовки еды','Помощь с документами','Сопровождение на прогулке',
+  'Присмотр за детьми','Уход за новорождённым','Покупки и доставка'
+];
+
+const MOCK_HELPERS = [
+  {name:'Мария П.',initials:'МП',rating:4.9,skills:['Готовка','Уборка','Поддержка ГВ','Массаж'],online:true},
+  {name:'Ольга С.',initials:'ОС',rating:4.8,skills:['Уход за ребёнком','Купание малыша','Стирка'],online:true},
+  {name:'Елена В.',initials:'ЕВ',rating:4.7,skills:['Готовка','Покупка продуктов','Уборка'],online:false},
+  {name:'Наталья К.',initials:'НК',rating:5.0,skills:['Психологическая поддержка','Массаж','Лёгкий массаж'],online:true},
+  {name:'Светлана М.',initials:'СМ',rating:4.6,skills:['Покупки и доставка','Уборка','Глажка'],online:false},
+  {name:'Анастасия Р.',initials:'АР',rating:4.9,skills:['Уход за новорождённым','Поддержка ГВ','Эмоциональная поддержка'],online:true},
+];
+
+let currentUser = null; // {name, role: 'client'|'helper', initials}
+let selectedRole = null;
+let currentPanel = 'profile';
+let authToken = localStorage.getItem('tr_token') || null;
+const API_BASE = typeof resolveTeploApiBase === 'function' ? resolveTeploApiBase() : '';
+let currentRescheduleOrderId = null;
+let selectedCabinetThreadId = null;
+
+// ── AUTH ──
+function switchAuthTab(tab) {
+  document.getElementById('tabLogin').classList.toggle('active', tab==='login');
+  document.getElementById('tabRegister').classList.toggle('active', tab==='register');
+  document.getElementById('formLogin').style.display = tab==='login' ? '' : 'none';
+  document.getElementById('formRegister').style.display = tab==='register' ? '' : 'none';
+}
+
+function selectRole(role) {
+  selectedRole = role;
+  document.getElementById('roleClient').classList.toggle('selected', role==='client');
+  document.getElementById('roleHelper').classList.toggle('selected', role==='helper');
+}
+
+function doLogin() {
+  const identifier = document.getElementById('loginIdentifier').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  if (!identifier || !password) {
+    showToast('Введите телефон/email и пароль');
+    return;
+  }
+  apiRequest('/api/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ identifier, password })
+  }).then((data) => {
+    authToken = data.token;
+    localStorage.setItem('tr_token', authToken);
+    loginAs(data.user.role, data.user.name, initialsFromName(data.user.name));
+    loadProfile();
+    showToast('Вход выполнен');
+  }).catch((e) => showToast(e.message || 'Ошибка входа'));
+}
+
+function doRegister() {
+  if (!selectedRole) { showToast('Выбери роль — клиентка или помощница'); return; }
+  const name = document.getElementById('registerName').value.trim();
+  const phone = document.getElementById('registerPhone').value.trim();
+  const email = document.getElementById('registerEmail').value.trim();
+  const password = document.getElementById('registerPassword').value.trim();
+  if (!name || !phone || !password) {
+    showToast('Имя, телефон и пароль обязательны');
+    return;
+  }
+  apiRequest('/api/auth/register', {
+    method: 'POST',
+    body: JSON.stringify({ role: selectedRole, name, phone, email, password })
+  }).then((data) => {
+    if (data.pendingReview) {
+      showToast(data.message || 'Заявка отправлена. После одобрения администратором вы сможете войти.');
+      switchAuthTab('login');
+      return;
+    }
+    authToken = data.token;
+    localStorage.setItem('tr_token', authToken);
+    loginAs(data.user.role, data.user.name, initialsFromName(data.user.name));
+    loadProfile();
+    showToast('Регистрация завершена');
+  }).catch((e) => showToast(e.message || 'Ошибка регистрации'));
+}
+
+function loginAs(role, name, initials) {
+  currentUser = {role, name, initials};
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('cabinetScreen').style.display = '';
+  document.getElementById('sidebarName').textContent = name;
+  document.getElementById('sidebarAvatar').textContent = initials;
+  const badge = document.getElementById('sidebarBadge');
+  badge.textContent = role==='client' ? 'Клиентка' : 'Помощница';
+  badge.className = 'user-role-badge ' + (role==='client' ? 'badge--client' : 'badge--helper');
+  buildNav(role);
+  buildFilterGrid();
+  buildHelpersList(MOCK_HELPERS);
+  buildHelperSkillsGrid();
+  showPanel(role==='client' ? 'profile' : 'helper-profile');
+  lucide.createIcons();
+}
+
+function doLogout() {
+  currentUser = null;
+  authToken = null;
+  localStorage.removeItem('tr_token');
+  document.getElementById('authScreen').style.display = 'flex';
+  document.getElementById('cabinetScreen').style.display = 'none';
+}
+
+function initialsFromName(name) {
+  return String(name || '')
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() || '')
+    .join('') || 'ТР';
+}
+
+async function apiRequest(url, options = {}) {
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(authToken ? { Authorization: 'Bearer ' + authToken } : {}),
+    ...(options.headers || {})
+  };
+  let res;
+  try {
+    res = await fetch(API_BASE + url, { ...options, headers });
+  } catch (e) {
+    throw new Error(
+      'Нет связи с сервером API. На Beget через Sprut.io Node.js не запускается — откройте HOSTING-BEGET.md и настройте site-config.js'
+    );
+  }
+  const ct = (res.headers.get('content-type') || '').toLowerCase();
+  const data = ct.includes('json') ? await res.json().catch(() => ({})) : {};
+  if (!res.ok) {
+    if (res.status === 404) {
+      throw new Error(
+        'Сервер вернул 404: API не найден. Обычный хостинг Beget отдаёт только файлы — укажите адрес Node API в site-config.js (см. HOSTING-BEGET.md)'
+      );
+    }
+    throw new Error(data.error || 'Ошибка запроса');
+  }
+  return data;
+}
+
+function fillProfileForm(user) {
+  const profilePanel = document.getElementById('panel-profile');
+  if (profilePanel) {
+    const textInputs = profilePanel.querySelectorAll('input.form-input');
+    if (textInputs[0]) textInputs[0].value = user.name || '';
+    if (textInputs[1]) textInputs[1].value = user.phone || '';
+    if (textInputs[2]) textInputs[2].value = user.address || '';
+  }
+  const helperPanel = document.getElementById('panel-helper-profile');
+  if (helperPanel) {
+    const helperInputs = helperPanel.querySelectorAll('input.form-input');
+    if (helperInputs[0]) helperInputs[0].value = user.name || '';
+    if (helperInputs[1]) helperInputs[1].value = user.phone || '';
+    const bio = helperPanel.querySelector('textarea.form-input');
+    if (bio) bio.value = user.bio || '';
+  }
+}
+
+function loadProfile() {
+  if (!authToken) return;
+  apiRequest('/api/me')
+    .then(({ user }) => {
+      if (!user) return;
+      currentUser = { role: user.role, name: user.name, initials: initialsFromName(user.name) };
+      document.getElementById('sidebarName').textContent = user.name || 'Пользователь';
+      document.getElementById('sidebarAvatar').textContent = initialsFromName(user.name);
+      fillProfileForm(user);
+    })
+    .catch(() => {
+      doLogout();
+      showToast('Сессия истекла, войдите снова');
+    });
+}
+
+function saveProfile() {
+  if (!authToken || !currentUser) {
+    showToast('Сначала войдите в кабинет');
+    return;
+  }
+  const panelId = currentUser.role === 'client' ? 'panel-profile' : 'panel-helper-profile';
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+  const textInputs = panel.querySelectorAll('input.form-input');
+  const name = textInputs[0]?.value.trim() || currentUser.name;
+  const phone = textInputs[1]?.value.trim();
+  const address = textInputs[2]?.value.trim() || '';
+  const bio = panel.querySelector('textarea.form-input')?.value?.trim() || '';
+
+  const skills = [...document.querySelectorAll('#helperSkillsGrid input:checked')]
+    .map((i) => i.closest('.skill-toggle')?.innerText.trim())
+    .filter(Boolean)
+    .join(', ');
+
+  apiRequest('/api/me/profile', {
+    method: 'PUT',
+    body: JSON.stringify({
+      name,
+      address,
+      bio,
+      skills
+    })
+  }).then(() => {
+    currentUser.name = name;
+    document.getElementById('sidebarName').textContent = name;
+    document.getElementById('sidebarAvatar').textContent = initialsFromName(name);
+    showToast('Анкета сохранена');
+  }).catch((e) => showToast(e.message || 'Не удалось сохранить'));
+}
+
+// ── NAV ──
+function buildNav(role) {
+  const nav = document.getElementById('sidebarNav');
+  const items = role === 'client' ? [
+    {id:'profile', icon:'user', label:'Моя анкета'},
+    {id:'orders', icon:'list-ordered', label:'Мои заказы'},
+    {id:'messages', icon:'message-circle', label:'Сообщения'},
+    {id:'search', icon:'search', label:'Найти помощницу'},
+  ] : [
+    {id:'helper-profile', icon:'user', label:'Моя анкета'},
+    {id:'helper-orders', icon:'list-ordered', label:'Мои заказы'},
+    {id:'messages', icon:'message-circle', label:'Сообщения'},
+  ];
+  nav.innerHTML = items.map(i => `
+    <a href="#" onclick="showPanel('${i.id}');return false;" id="nav-${i.id}">
+      <i data-lucide="${i.icon}" width="16" height="16"></i>
+      ${i.label}
+    </a>`).join('');
+}
+
+function showPanel(id) {
+  document.querySelectorAll('.content-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-nav a').forEach(a=>a.classList.remove('active'));
+  const panel = document.getElementById('panel-'+id);
+  const navItem = document.getElementById('nav-'+id);
+  if(panel) panel.classList.add('active');
+  if(navItem) navItem.classList.add('active');
+  currentPanel = id;
+  if (id === 'orders' || id === 'helper-orders') {
+    loadOrders();
+  }
+  if (id === 'messages') {
+    loadCabinetThreads()
+      .then(() => loadCabinetMessages())
+      .catch(() => showToast('Не удалось загрузить чаты'));
+  }
+  lucide.createIcons();
+}
+
+function escChat(s) {
+  if (s == null) return '';
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function openOrderChat(peerId) {
+  if (!peerId) {
+    showToast('Переписка появится после назначения помощницы на заказ');
+    return false;
+  }
+  openChatWithPeer(Number(peerId));
+  return false;
+}
+
+function openChatWithPeer(peerId) {
+  if (!authToken || !peerId || !currentUser) return;
+  apiRequest('/api/chat/open', {
+    method: 'POST',
+    body: JSON.stringify({ peer_id: peerId }),
+  })
+    .then((data) => {
+      selectedCabinetThreadId = data.thread_id;
+      showPanel('messages');
+      return loadCabinetThreads();
+    })
+    .then(() => loadCabinetMessages())
+    .catch((e) => showToast(e.message || 'Не удалось открыть чат'));
+}
+
+function loadCabinetThreads() {
+  if (!authToken) return Promise.resolve();
+  return apiRequest('/api/chat/threads').then(({ threads }) => {
+    const box = document.getElementById('cabinet-thread-list');
+    const list = threads || [];
+    if (!list.length) {
+      box.innerHTML = '<p style="padding:var(--space-3);font-size:var(--text-sm);color:var(--color-text-muted);">Нет диалогов. Откройте переписку из карточки заказа.</p>';
+      return;
+    }
+    box.innerHTML = list
+      .map((t) => {
+        const active = selectedCabinetThreadId === t.id ? ' is-active' : '';
+        return `<button type="button" class="chat-thread-item${active}" data-tid="${t.id}">
+          <strong>${escChat(t.peer_name)}</strong>
+          <small style="display:block;color:var(--color-text-muted);">${escChat((t.last_preview || '').slice(0, 60))}</small>
+        </button>`;
+      })
+      .join('');
+    box.querySelectorAll('.chat-thread-item').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        selectedCabinetThreadId = Number(btn.dataset.tid);
+        box.querySelectorAll('.chat-thread-item').forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        loadCabinetMessages();
+      });
+    });
+    if (selectedCabinetThreadId && !list.some((t) => t.id === selectedCabinetThreadId)) {
+      selectedCabinetThreadId = list[0].id;
+    }
+    if (!selectedCabinetThreadId && list.length) {
+      selectedCabinetThreadId = list[0].id;
+    }
+    if (selectedCabinetThreadId) {
+      box.querySelector(`[data-tid="${selectedCabinetThreadId}"]`)?.classList.add('is-active');
+    }
+  });
+}
+
+function loadCabinetMessages() {
+  const el = document.getElementById('cabinet-chat-messages');
+  if (!authToken || !selectedCabinetThreadId) {
+    if (el) el.innerHTML = '';
+    return Promise.resolve();
+  }
+  return apiRequest('/api/chat/threads/' + selectedCabinetThreadId + '/messages').then(({ messages }) => {
+    if (!el) return;
+    el.innerHTML = (messages || [])
+      .map((m) => {
+        const mine = m.is_mine;
+        const cls = mine ? 'cab-bubble cab-bubble--me' : 'cab-bubble cab-bubble--in';
+        return `<div><div class="cab-meta">${escChat(m.sender_name)} · ${escChat(m.created_at)}</div><div class="${cls}">${escChat(m.body)}</div></div>`;
+      })
+      .join('');
+    el.scrollTop = el.scrollHeight;
+  });
+}
+
+document.getElementById('cabinet-chat-send')?.addEventListener('click', () => {
+  const ta = document.getElementById('cabinet-chat-input');
+  const text = ta && ta.value.trim();
+  if (!text || !selectedCabinetThreadId || !authToken) return;
+  apiRequest('/api/chat/threads/' + selectedCabinetThreadId + '/messages', {
+    method: 'POST',
+    body: JSON.stringify({ body: text }),
+  })
+    .then(() => {
+      ta.value = '';
+      return loadCabinetMessages();
+    })
+    .then(() => loadCabinetThreads())
+    .catch((e) => showToast(e.message || 'Не отправлено'));
+});
+
+// ── SKILLS / FILTERS ──
+function buildFilterGrid() {
+  const grid = document.getElementById('filterGrid');
+  if(!grid) return;
+  grid.innerHTML = ALL_SKILLS.map(s => `
+    <label class="filter-check" id="fc-${s.replace(/\s/g,'_')}">
+      <input type="checkbox" value="${s}" onchange="toggleFilterCheck(this)">
+      ${s}
+    </label>`).join('');
+}
+
+function toggleFilterCheck(input) {
+  const label = input.closest('.filter-check');
+  label.classList.toggle('checked', input.checked);
+}
+
+function applySearch() {
+  const checked = [...document.querySelectorAll('#filterGrid input:checked')].map(i=>i.value);
+  const filtered = checked.length ? MOCK_HELPERS.filter(h=>checked.some(s=>h.skills.includes(s))) : MOCK_HELPERS;
+  buildHelpersList(filtered);
+  showToast(filtered.length + ' помощниц найдено');
+}
+
+function resetFilters() {
+  document.querySelectorAll('#filterGrid input').forEach(i=>{ i.checked=false; });
+  document.querySelectorAll('#filterGrid .filter-check').forEach(l=>l.classList.remove('checked'));
+  buildHelpersList(MOCK_HELPERS);
+}
+
+function buildHelpersList(helpers) {
+  const list = document.getElementById('helpersList');
+  if(!list) return;
+  list.innerHTML = helpers.map(h => `
+    <div class="helper-card">
+      <div class="helper-card-top"></div>
+      <div class="helper-avatar">${h.initials}</div>
+      <div class="helper-body">
+        <div class="helper-name">${h.name}</div>
+        <div class="helper-rating">
+          <i data-lucide="star" width="12" height="12"></i>
+          ${h.rating}
+          ${h.online ? '<span class="online-dot"></span>Online' : ''}
+        </div>
+        <div class="helper-tags">
+          ${h.skills.slice(0,3).map(s=>`<span class="helper-tag">${s}</span>`).join('')}
+        </div>
+        <button class="btn btn--ghost btn--sm btn--full" onclick="contactHelper('${h.name}')">
+          <i data-lucide="message-circle" width="13" height="13"></i>
+          Написать
+        </button>
+      </div>
+    </div>`).join('');
+  lucide.createIcons();
+}
+
+function contactHelper(name) {
+  showToast('Сообщение отправлено ' + name + ' 💛');
+}
+
+function buildHelperSkillsGrid() {
+  const grid = document.getElementById('helperSkillsGrid');
+  if(!grid) return;
+  grid.innerHTML = ALL_SKILLS.map(s => `
+    <label class="skill-toggle" id="st-${s.replace(/\s/g,'_')}" onclick="toggleSkill(this)">
+      <input type="checkbox" style="pointer-events:none;">
+      <span>${s}</span>
+    </label>`).join('');
+}
+
+function toggleSkill(label) {
+  const cb = label.querySelector('input');
+  cb.checked = !cb.checked;
+  label.classList.toggle('checked', cb.checked);
+}
+
+// ── ORDERS ──
+function cancelOrder(id, isFree) {
+  if (!authToken) {
+    const msg = isFree
+      ? 'Заказ #'+id+' отменён бесплатно: на завтра или до начала более 3 часов.'
+      : 'Отмена в день заказа менее чем за 3 часа до начала — применяется платная отмена.';
+    showToast(msg);
+    return;
+  }
+  const reason = currentUser?.role === 'helper' ? 'illness' : 'client';
+  apiRequest(`/api/orders/${id}/cancel`, {
+    method: 'PATCH',
+    body: JSON.stringify({ reason })
+  }).then((r) => {
+    const msg = r.cancellation_fee
+      ? 'Заказ отменён. Применена платная отмена (менее 3 часов).'
+      : 'Заказ отменён бесплатно.';
+    showToast(msg);
+    loadOrders();
+  }).catch((e) => showToast(e.message || 'Ошибка отмены'));
+}
+
+function openRescheduleModal(id) {
+  currentRescheduleOrderId = id;
+  document.getElementById('rescheduleModal').classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function submitReschedule() {
+  if (authToken && currentRescheduleOrderId) {
+    const d = document.getElementById('rescheduleDate').value;
+    const t = document.getElementById('rescheduleTime').value || '10:00';
+    const c = document.getElementById('rescheduleComment').value.trim();
+    if (!d) {
+      showToast('Выберите новую дату');
+      return;
+    }
+    apiRequest(`/api/orders/${currentRescheduleOrderId}/reschedule`, {
+      method: 'PATCH',
+      body: JSON.stringify({ new_date: `${d} ${t}`, comment: c })
+    }).then(() => {
+      closeModal('rescheduleModal');
+      showToast('Запрос на перенос отправлен: другая сторона может подтвердить или отклонить. При отклонении заказ уйдет в черновики и будет предложен список активных помощниц.');
+      loadOrders();
+    }).catch((e) => showToast(e.message || 'Ошибка переноса'));
+    return;
+  }
+  closeModal('rescheduleModal');
+  showToast('Запрос на перенос отправлен: другая сторона может подтвердить или отклонить. При отклонении заказ уйдет в черновики и будет предложен список активных помощниц.');
+}
+
+// ── NOTES ──
+function addProfileNote() {
+  const input = document.getElementById('newNoteInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const notes = document.getElementById('profileNotes');
+  const div = document.createElement('div');
+  div.className = 'important-note';
+  div.textContent = text;
+  notes.appendChild(div);
+  input.value = '';
+}
+
+function addOrderNote(id) {
+  const input = document.getElementById('note'+id) || document.getElementById('helperNote'+id.replace('helper-',''));
+  if(!input) return;
+  const text = input.value.trim();
+  if(!text) { showToast('Введи заметку'); return; }
+  const orderId = String(id).replace('helper-','');
+  if (authToken) {
+    const card = input.closest('.important-box');
+    const prev = [...card.querySelectorAll('.important-note')]
+      .map((el) => el.textContent.trim())
+      .filter(Boolean);
+    const merged = [...prev, text].join(' | ');
+    apiRequest(`/api/orders/${orderId}/important`, {
+      method: 'PATCH',
+      body: JSON.stringify({ important: merged })
+    }).then(() => {
+      loadOrders();
+      showToast('Заметка добавлена');
+    }).catch((e) => showToast(e.message || 'Ошибка сохранения заметки'));
+    return;
+  }
+  const box = input.closest('.important-box');
+  const div = document.createElement('div');
+  div.className = 'important-note';
+  div.textContent = text;
+  box.insertBefore(div, input.closest('.important-add'));
+  input.value = '';
+  showToast('Заметка добавлена');
+}
+
+function renderOrders(role, orders) {
+  const panelId = role === 'helper' ? 'panel-helper-orders' : 'panel-orders';
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+  const list = panel.querySelector('.orders-list');
+  if (!list) return;
+
+  if (!orders.length) {
+    list.innerHTML = `
+      <div class="order-card">
+        <div class="order-body">
+          <div style="font-size:var(--text-sm);color:var(--color-text-muted);">Заказов пока нет.</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = orders.map((o) => {
+    const services = (o.services || '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const notes = (o.important || '')
+      .split('|')
+      .map((n) => n.trim())
+      .filter(Boolean);
+    const personLabel = role === 'helper' ? 'Клиентка' : 'Помощница';
+    const personName = role === 'helper' ? (o.client_name || '—') : (o.helper_name || '—');
+    const peerId = role === 'helper' ? o.client_id : o.helper_id;
+    const noteInputId = role === 'helper' ? `helperNote${o.id}` : `note${o.id}`;
+    const statusClass = o.status === 'active' ? 'status--active' : (o.status === 'cancelled' ? 'status--done' : 'status--pending');
+    const chatHtml = peerId
+      ? `<a class="chat-link" href="#" onclick="return openOrderChat(${peerId});">
+            <i data-lucide="message-circle" width="16" height="16"></i>
+            Написать ${role === 'helper' ? 'клиентке' : 'помощнице'} (${personName})
+            <i data-lucide="arrow-right" width="14" height="14" style="margin-left:auto;"></i>
+          </a>`
+      : `<div class="chat-link" style="opacity:0.65;cursor:default">
+            <i data-lucide="message-circle" width="16" height="16"></i>
+            Чат будет доступен после назначения помощницы
+          </div>`;
+    return `
+      <div class="order-card">
+        <div class="order-header">
+          <div class="order-header-left">
+            <span class="order-number">#${o.id}</span>
+            <span class="status-badge ${statusClass}">${o.status === 'cancelled' ? 'Отменён' : 'Активный'}</span>
+          </div>
+          <span style="font-size:var(--text-xs);color:var(--color-text-muted);">${o.order_date || 'Дата не указана'}</span>
+        </div>
+        <div class="order-body">
+          <div class="order-meta">
+            <div class="order-meta-item"><span class="label">${personLabel}</span><span class="value">${personName}</span></div>
+            <div class="order-meta-item"><span class="label">Тариф</span><span class="value">${o.tariff || '—'}</span></div>
+          </div>
+          <div class="order-services">
+            ${(services.length ? services : ['Без детализации']).map((s) => `<span class="service-tag">${s}</span>`).join('')}
+          </div>
+          <div class="important-box">
+            <h4><i data-lucide="star" width="12" height="12"></i> Важное</h4>
+            ${notes.map((n) => `<div class="important-note">${n}</div>`).join('')}
+            <div class="important-add">
+              <input type="text" placeholder="Добавить заметку..." id="${noteInputId}">
+              <button class="btn btn--ghost btn--sm" onclick="addOrderNote('${role === 'helper' ? 'helper-' + o.id : o.id}')"><i data-lucide="plus" width="14" height="14"></i></button>
+            </div>
+          </div>
+          ${chatHtml}
+          <div class="order-actions">
+            <button class="btn btn--ghost btn--sm" onclick="openRescheduleModal('${o.id}')"><i data-lucide="calendar" width="13" height="13"></i> Перенести встречу</button>
+            <button class="btn btn--outline btn--sm" onclick="cancelOrder('${o.id}', true)" style="color:var(--color-text-muted);border-color:var(--color-border);">
+              <i data-lucide="x" width="13" height="13"></i> Отменить заказ
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  lucide.createIcons();
+}
+
+function loadOrders() {
+  if (!authToken || !currentUser) return;
+  apiRequest('/api/orders')
+    .then(({ orders }) => {
+      if (currentUser.role === 'client' && (!orders || orders.length === 0)) {
+        return apiRequest('/api/orders', {
+          method: 'POST',
+          body: JSON.stringify({
+            order_date: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 16).replace('T', ' '),
+            tariff: 'Золотая середина',
+            services: 'Готовка, Уборка, Поддержка ГВ',
+            important: 'Аллергия на арахис | Не звонить в домофон'
+          })
+        }).then(() => apiRequest('/api/orders')).then((r2) => {
+          renderOrders(currentUser.role, r2.orders || []);
+        });
+      }
+      renderOrders(currentUser.role, orders || []);
+    })
+    .catch(() => showToast('Не удалось загрузить заказы'));
+}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastText').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove('show'), 3500);
+}
+
+// ── THEME ──
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  lucide.createIcons();
+});
+
+const burger = document.getElementById('burgerBtn');
+const mobileNav = document.getElementById('mobileNav');
+if (burger && mobileNav) {
+  burger.addEventListener('click', () => {
+    const open = !mobileNav.classList.contains('open');
+    mobileNav.classList.toggle('open', open);
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+function closeMobileNav() {
+  if (!mobileNav || !burger) return;
+  mobileNav.classList.remove('open');
+  burger.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+}
+
+// ── INIT ──
+lucide.createIcons();
+if (authToken) {
+  apiRequest('/api/me')
+    .then(({ user }) => {
+      if (!user) return;
+      loginAs(user.role, user.name, initialsFromName(user.name));
+      fillProfileForm(user);
+    })
+    .catch(() => {
+      localStorage.removeItem('tr_token');
+      authToken = null;
+    });
+}
+</script>
+</body>
+</html>

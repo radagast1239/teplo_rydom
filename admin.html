@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ-панель — Тепло рядом</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- При смене Railway URL правьте и site-config.js; однострочный резерв до загрузки site-config -->
+<script>window.TR_API_BASE="https://teplo-ryadom-api-production.up.railway.app";</script>
+<script src="site-config.js?v=4"></script>
+<style>
+:root {
+  --font-display:'Cormorant Garamond',Georgia,serif;
+  --font-body:'Jost',sans-serif;
+  --text-sm:clamp(0.875rem,0.8rem + 0.35vw,1rem);
+  --text-base:clamp(1rem,0.95rem + 0.25vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + 0.75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --space-2:0.5rem;--space-3:0.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;
+  --radius-md:0.625rem;--radius-lg:1rem;--radius-xl:1.5rem;--radius-full:9999px;
+  --transition:200ms cubic-bezier(0.16,1,0.3,1);
+  --color-bg:#fdf8f5;--color-surface:#fff9f6;--color-surface-offset:#f8eeea;
+  --color-border:#e5d4ce;--color-divider:#edddd8;
+  --color-text:#2e1f1a;--color-text-muted:#7a5e57;--color-text-faint:#b89b94;
+  --color-primary:#9b4f40;--color-primary-hover:#7e3c30;--color-primary-hl:#f2deda;
+  --color-rose:#c8877a;--color-rose-lighter:#f8ecea;
+  --shadow-sm:0 1px 3px oklch(0.25 0.06 20/0.06);
+  --shadow-md:0 4px 16px oklch(0.25 0.06 20/0.09);
+  --content-wide:1200px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);min-height:100dvh;line-height:1.6;}
+a{color:var(--color-primary);}
+button{cursor:pointer;font:inherit;border:none;background:none;}
+.header{position:sticky;top:0;z-index:50;background:color-mix(in oklch,var(--color-bg) 92%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--color-divider);}
+.header-inner{max-width:var(--content-wide);margin:0 auto;padding:var(--space-4) var(--space-6);display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);}
+.logo{font-family:var(--font-display);font-size:var(--text-lg);font-weight:600;}
+.logo span{color:var(--color-text-muted);font-weight:400;font-size:var(--text-sm);}
+.header-actions{display:flex;align-items:center;gap:var(--space-2);}
+.burger{display:none;flex-direction:column;gap:5px;width:40px;height:40px;align-items:center;justify-content:center;border-radius:var(--radius-full);}
+.burger span{display:block;width:20px;height:1.5px;background:var(--color-text);border-radius:2px;transition:transform var(--transition),opacity var(--transition);}
+.burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+.mobile-nav{display:none;position:fixed;inset:0;top:60px;z-index:60;background:var(--color-bg);padding:var(--space-5);flex-direction:column;gap:var(--space-3);border-top:1px solid var(--color-divider);}
+.mobile-nav.open{display:flex;}
+.mobile-nav a,.mobile-nav button{display:flex;align-items:center;justify-content:center;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);background:var(--color-surface-offset);color:var(--color-primary);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);padding:var(--space-3) var(--space-5);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:500;transition:all var(--transition);}
+.btn--primary{background:var(--color-primary);color:#fff;}
+.btn--primary:hover{background:var(--color-primary-hover);}
+.btn--outline{border:1.5px solid var(--color-rose);color:var(--color-primary);}
+.btn--sm{padding:var(--space-2) var(--space-4);font-size:0.8rem;}
+/* Явно скрываем экраны: иначе .auth-wrap (display:flex) иногда перебивает только [hidden] */
+#screen-login[hidden],#screen-dash[hidden]{display:none!important;}
+.auth-wrap{min-height:calc(100dvh - 60px);display:flex;align-items:center;justify-content:center;padding:var(--space-8);}
+.auth-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-8);max-width:420px;width:100%;box-shadow:var(--shadow-md);}
+.auth-card h1{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:var(--space-2);}
+.auth-card p{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-6);}
+.form-group{margin-bottom:var(--space-4);}
+.form-label{display:block;font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-2);}
+.form-input{width:100%;padding:var(--space-3) var(--space-4);border:1.5px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);font:inherit;}
+.form-input:focus{outline:none;border-color:var(--color-rose);}
+.msg{font-size:var(--text-sm);margin-top:var(--space-4);padding:var(--space-3);border-radius:var(--radius-md);}
+.msg--err{background:#fdecea;color:#b71c1c;}
+.msg--ok{background:#e8f5e9;color:#2e7d32;}
+.app-banner{font-size:var(--text-sm);padding:var(--space-3) var(--space-6);text-align:center;}
+.app-banner.msg--err{margin:0;border-radius:0;}
+.app-banner.msg--pending{margin:0;border-radius:0;background:#fff8e1;color:#5d4037;}
+.layout{max-width:var(--content-wide);margin:0 auto;padding:var(--space-8) var(--space-6);}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:var(--space-4);margin-bottom:var(--space-8);}
+.stat-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5);text-align:center;}
+.stat-card strong{display:block;font-family:var(--font-display);font-size:var(--text-xl);color:var(--color-primary);}
+.stat-card span{font-size:var(--text-sm);color:var(--color-text-muted);}
+.tabs{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-6);}
+.tab{padding:var(--space-2) var(--space-5);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:500;color:var(--color-text-muted);background:var(--color-surface-offset);transition:all var(--transition);}
+.tab.active{background:var(--color-primary-hl);color:var(--color-primary);}
+.panel{display:none;}
+.panel.active{display:block;}
+.panel h2{font-family:var(--font-display);font-size:var(--text-lg);margin-bottom:var(--space-5);}
+.table-wrap{overflow:auto;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-surface);box-shadow:var(--shadow-sm);}
+table{width:100%;border-collapse:collapse;font-size:0.8rem;}
+th,td{padding:var(--space-3) var(--space-4);text-align:left;border-bottom:1px solid var(--color-divider);vertical-align:top;}
+th{background:var(--color-surface-offset);font-weight:600;color:var(--color-text-muted);white-space:nowrap;}
+tr:last-child td{border-bottom:none;}
+.badge{display:inline-block;padding:2px 8px;border-radius:var(--radius-full);font-size:0.7rem;font-weight:600;}
+.badge--client{background:var(--color-primary-hl);color:var(--color-primary);}
+.badge--helper{background:#e8f5e9;color:#2e7d32;}
+.badge--blocked{background:#ffebee;color:#c62828;}
+.badge--pending{background:#fff8e1;color:#f57f17;}
+.badge--rejected{background:#eceff1;color:#546e7a;}
+.chat-admin-grid{display:grid;grid-template-columns:minmax(200px,280px) 1fr;gap:var(--space-6);align-items:start;min-height:420px;}
+@media(max-width:900px){.chat-admin-grid{grid-template-columns:1fr;}}
+.chat-thread-list{border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-surface);max-height:480px;overflow:auto;}
+.chat-thread-item{padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-divider);cursor:pointer;text-align:left;font:inherit;width:100%;background:transparent;color:var(--color-text);}
+.chat-thread-item:hover,.chat-thread-item.is-active{background:var(--color-surface-offset);}
+.chat-thread-item small{display:block;color:var(--color-text-muted);font-size:0.75rem;margin-top:4px;}
+.chat-messages{border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-surface);padding:var(--space-4);max-height:360px;overflow:auto;margin-bottom:var(--space-4);}
+.chat-bubble{max-width:85%;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);margin-bottom:var(--space-3);font-size:var(--text-sm);line-height:1.45;}
+.chat-bubble--me{margin-left:auto;background:var(--color-primary-hl);color:var(--color-text);}
+.chat-bubble--other{margin-right:auto;background:var(--color-surface-offset);border:1px solid var(--color-divider);}
+.chat-bubble--staff{border-left:3px solid var(--color-primary);}
+.chat-meta{font-size:0.7rem;color:var(--color-text-muted);margin-bottom:4px;}
+.chat-composer{display:flex;flex-direction:column;gap:var(--space-2);}
+.chat-composer textarea{width:100%;padding:var(--space-3);border:1.5px solid var(--color-border);border-radius:var(--radius-md);font:inherit;resize:vertical;min-height:72px;}
+.cell-muted{color:var(--color-text-muted);max-width:220px;word-break:break-word;}
+.settings-grid{display:grid;gap:var(--space-5);max-width:480px;}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-4);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);}
+.setting-row span{font-size:var(--text-sm);}
+.toggle{width:48px;height:26px;border-radius:var(--radius-full);background:var(--color-border);position:relative;flex-shrink:0;transition:background var(--transition);}
+.toggle.on{background:var(--color-primary);}
+.toggle::after{content:'';position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform var(--transition);box-shadow:var(--shadow-sm);}
+.toggle.on::after{transform:translateX(22px);}
+.hint{font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-6);max-width:560px;}
+@media(max-width:720px){
+  .header-inner{padding-inline:var(--space-4);}
+  .header-actions .btn{display:none;}
+  .burger{display:flex;}
+  th,td{padding:var(--space-2);}
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">Тепло рядом <span>· админ</span></div>
+    <div id="header-actions" class="header-actions">
+      <a href="index.html" class="btn btn--outline btn--sm">На сайт</a>
+      <button type="button" class="btn btn--outline btn--sm" id="btn-logout" hidden>Выйти</button>
+      <button type="button" class="burger" id="burgerBtn" aria-label="Меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div id="app-banner" class="app-banner" hidden></div>
+<nav class="mobile-nav" id="mobileNav" aria-label="Меню администратора">
+  <a href="index.html" onclick="closeMobileNav()">На сайт</a>
+  <button type="button" id="btn-logout-mobile" onclick="closeMobileNav()">Выйти</button>
+</nav>
+
+<section class="auth-wrap" id="screen-login">
+  <div class="auth-card">
+    <h1>Вход администратора</h1>
+    <p><strong>Важно:</strong> это вход <em>только для администратора</em> (отдельная учётка в базе). Пароль от личного кабинета клиента/помощника сюда не подходит.</p>
+    <p style="margin-top:var(--space-3)">Откройте эту страницу по адресу <code>http://localhost:3000/admin.html</code> (пока запущен <code>npm start</code>). Если открыли файл с диска — вход не сработает без сервера.</p>
+    <p style="margin-top:var(--space-3)">Email по умолчанию: <strong>traceur95@mail.ru</strong>, пароль: из <code>ADMIN_PASSWORD</code> в <code>.env</code> или <strong>AdminTeplo2026!</strong> Сброс: <code>npm run reset-admin</code></p>
+    <form id="form-login">
+      <div class="form-group">
+        <label class="form-label" for="adm-email">Email</label>
+        <input class="form-input" id="adm-email" type="email" autocomplete="username" required placeholder="traceur95@mail.ru">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="adm-pass">Пароль</label>
+        <input class="form-input" id="adm-pass" type="password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn--primary" style="width:100%">Войти</button>
+    </form>
+    <div id="login-msg"></div>
+  </div>
+</section>
+
+<main class="layout" id="screen-dash" hidden>
+  <p style="margin-bottom:var(--space-6);color:var(--color-text-muted);font-size:var(--text-sm);">
+    Вы вошли как <strong id="dash-email"></strong>
+  </p>
+  <div class="stats" id="stats"></div>
+
+  <div class="tabs" role="tablist">
+    <button type="button" class="tab active" data-tab="zayavki">Заявки</button>
+    <button type="button" class="tab" data-tab="ankety">Все анкеты</button>
+    <button type="button" class="tab" data-tab="orders">Заказы</button>
+    <button type="button" class="tab" data-tab="chat">Чаты</button>
+    <button type="button" class="tab" data-tab="site">Управление сайтом</button>
+  </div>
+
+  <div class="panel active" id="panel-zayavki">
+    <h2>Заявки на регистрацию</h2>
+    <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-5);max-width:640px;">
+      Новые пользователи появляются здесь, пока статус анкеты «на проверке». После одобрения они смогут войти в личный кабинет.
+      Включить или выключить обязательное одобрение можно в разделе «Управление сайтом».
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Роль</th><th>Имя</th><th>Телефон</th><th>Email</th><th>Дата</th><th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-pending"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-ankety">
+    <h2>Пользователи и профили</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Роль</th><th>Имя</th><th>Телефон</th><th>Email</th>
+            <th>Город</th><th>О себе</th><th>Навыки</th><th>Смены</th><th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-profiles"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-orders">
+    <h2>Все заказы</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Статус</th><th>Дата</th><th>Клиент</th><th>Помощник</th><th>Тариф</th><th>Перенос</th><th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-orders"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-chat">
+    <h2>Переписки клиенток и помощниц</h2>
+    <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-5);max-width:640px;">
+      Все диалоги между участницами сервиса. Вы можете писать от имени администратора — сообщение отобразится у обеих сторон.
+    </p>
+    <div class="chat-admin-grid">
+      <div class="chat-thread-list" id="chat-thread-list" role="list"></div>
+      <div>
+        <div id="chat-admin-messages" class="chat-messages" aria-live="polite"></div>
+        <div class="chat-composer">
+          <textarea id="chat-admin-input" placeholder="Сообщение от администратора…"></textarea>
+          <button type="button" class="btn btn--primary btn--sm" id="chat-admin-send" style="align-self:flex-start">Отправить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-site">
+    <h2>Настройки</h2>
+    <div class="settings-grid">
+      <div class="setting-row">
+        <span>Регистрация новых пользователей открыта</span>
+        <button type="button" class="toggle" id="tog-reg" aria-label="Регистрация"></button>
+      </div>
+      <div class="setting-row">
+        <span>Новые анкеты только после одобрения админом</span>
+        <button type="button" class="toggle" id="tog-approval" aria-label="Одобрение заявок"></button>
+      </div>
+      <div class="setting-row">
+        <span>Режим обслуживания (баннер для посетителей — в разработке)</span>
+        <button type="button" class="toggle" id="tog-maint" aria-label="Обслуживание"></button>
+      </div>
+    </div>
+    <p class="hint">Уведомления о новых регистрациях уходят на почту <strong>traceur95@mail.ru</strong> (или <code>NOTIFY_EMAIL</code> в .env). Для реальной отправки задайте SMTP в переменных окружения — см. <code>.env.example</code>.</p>
+  </div>
+</main>
+
+<script>
+const TOKEN_KEY = "tr_admin_token";
+/** Тот же URL, что в site-config; используется, если resolveTeploApiBase вернул пусто (часто только на admin.html на Beget). */
+const TR_API_FALLBACK = "https://teplo-ryadom-api-production.up.railway.app";
+const API_FETCH_TIMEOUT_MS = 60000;
+
+function getApiBase() {
+  let b = "";
+  if (typeof resolveTeploApiBase === "function") {
+    try {
+      b = resolveTeploApiBase() || "";
+    } catch (e) {}
+  }
+  b = String(b || "").trim().replace(/\/+$/, "");
+  if (/\/api$/i.test(b)) b = b.replace(/\/api$/i, "");
+  b = b.replace(/\/+$/, "");
+  if (b) return b;
+  return TR_API_FALLBACK.replace(/\/$/, "").replace(/\/api$/i, "").replace(/\/+$/, "");
+}
+
+function apiUrl(path) {
+  return getApiBase() + path;
+}
+
+function esc(s) {
+  if (s == null) return "";
+  const d = document.createElement("div");
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+const api = async (path, opts = {}) => {
+  const headers = { "Content-Type": "application/json", ...(opts.headers || {}) };
+  const tok = localStorage.getItem(TOKEN_KEY);
+  if (tok) headers.Authorization = "Bearer " + tok;
+  const url = apiUrl(path);
+  const ac = new AbortController();
+  const tid = setTimeout(() => ac.abort(), API_FETCH_TIMEOUT_MS);
+  try {
+    const r = await fetch(url, {
+      ...opts,
+      headers,
+      signal: ac.signal,
+      mode: "cors",
+      credentials: "omit",
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      let msg = data.error || r.statusText || String(r.status);
+      if (r.status === 404) {
+        if (/\/api\/api\//.test(url)) {
+          msg =
+            "404 — в базовом адресе лишний /api (получилось «/api/api/…»). Укажите только домен, например …railway.app. Сброс: localStorage.removeItem('tr_api_base'). URL: " +
+            url;
+        } else {
+          msg =
+            "404 — сервер не отдал этот маршрут: " +
+            url +
+            ". Чаще всего на Railway не задеплоен последний server.js (нужны маршруты /api/admin/chat/*). Проверьте деплой и что открыт именно ваш Node-сервис.";
+        }
+      }
+      throw new Error(msg);
+    }
+    return data;
+  } catch (err) {
+    if (err && err.name === "AbortError") {
+      throw new Error(
+        "Сервер не ответил за " +
+          Math.round(API_FETCH_TIMEOUT_MS / 1000) +
+          " с. Откройте в новой вкладке проверку: " +
+          getApiBase() +
+          "/health — если страница не открывается, сеть или провайдер режут доступ к Railway (попробуйте другой интернет или VPN). Если открывается — нажмите «Войти» ещё раз."
+      );
+    }
+    throw err;
+  } finally {
+    clearTimeout(tid);
+  }
+};
+
+function showLogin() {
+  document.getElementById("screen-login").hidden = false;
+  document.getElementById("screen-dash").hidden = true;
+  document.getElementById("btn-logout").hidden = true;
+  document.getElementById("btn-logout-mobile").hidden = true;
+  window.scrollTo(0, 0);
+}
+function showDash() {
+  document.getElementById("screen-login").hidden = true;
+  document.getElementById("screen-dash").hidden = false;
+  const lm = document.getElementById("login-msg");
+  if (lm) lm.innerHTML = "";
+  document.getElementById("btn-logout").hidden = false;
+  document.getElementById("btn-logout-mobile").hidden = false;
+  window.scrollTo(0, 0);
+}
+
+function showAppBanner(text, kind) {
+  const b = document.getElementById("app-banner");
+  if (!b) return;
+  if (!text) {
+    b.hidden = true;
+    b.textContent = "";
+    b.className = "app-banner";
+    return;
+  }
+  b.hidden = false;
+  b.textContent = text;
+  if (kind === "pending") b.className = "app-banner msg msg--pending";
+  else if (kind === true || kind === "err") b.className = "app-banner msg msg--err";
+  else b.className = "app-banner msg msg--ok";
+}
+
+document.getElementById("form-login").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById("login-msg");
+  const btn = e.submitter || e.target.querySelector('button[type="submit"]');
+  msg.innerHTML = "";
+  showAppBanner("");
+  const API_BASE = getApiBase();
+  let apiHost = API_BASE;
+  try {
+    apiHost = new URL(API_BASE).hostname;
+  } catch (_) {}
+  const healthUrl = API_BASE.replace(/\/$/, "") + "/health";
+  msg.innerHTML =
+    '<div class="msg" style="background:#f0f4ff;color:#3949ab;">Подождите, запрос к <strong>' +
+    esc(apiHost) +
+    '</strong>… Первый раз после паузы Railway может отвечать до минуты.</div>';
+  showAppBanner(
+    "Связь с API (" + apiHost + ")… Если долго висит — откройте в новой вкладке: " + healthUrl,
+    "pending"
+  );
+  const email = document.getElementById("adm-email").value.trim();
+  const password = document.getElementById("adm-pass").value;
+  if (btn) btn.disabled = true;
+  try {
+    const data = await api("/api/admin/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: {},
+    });
+    if (!data || !data.token || !data.admin) {
+      throw new Error("Некорректный ответ сервера (нет token или admin)");
+    }
+    localStorage.setItem(TOKEN_KEY, data.token);
+    showAppBanner("");
+    showDash();
+    document.getElementById("dash-email").textContent = data.admin.email;
+    try {
+      await refreshAll();
+    } catch (loadErr) {
+      const lt = loadErr && loadErr.message ? loadErr.message : String(loadErr);
+      showAppBanner("Вошли, но не удалось загрузить данные: " + lt, true);
+    }
+  } catch (err) {
+    localStorage.removeItem(TOKEN_KEY);
+    showLogin();
+    let t = err && err.message ? err.message : String(err);
+    if (t === "Failed to fetch" || t.includes("NetworkError")) {
+      t =
+        "Браузер не смог достучаться до API (Failed to fetch). Частая картина: без VPN не открывается, с VPN появляется «Подождите…» — значит с вашей сети до хостинга Railway (домен *.railway.app) трафик не доходит или режется; это не ошибка пароля и не Beget. Варианты: работать с админкой через VPN или мобильный интернет; для посетителей сайта без VPN тогда нужен API на площадке, доступной из вашего региона (или свой домен/прокси к API). Технически: залейте свежие site-config.js и admin.html, Ctrl+F5, в консоли localStorage.removeItem('tr_api_base'), проверьте " +
+        getApiBase() +
+        "/health в новой вкладке.";
+    }
+    if (t.includes("404")) {
+      t +=
+        " Если сайт только на Beget без отдельного сервера с Node — см. HOSTING-BEGET.md.";
+    }
+    msg.innerHTML = '<div class="msg msg--err">' + esc(t) + "</div>";
+    showAppBanner(t, true);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+});
+
+document.getElementById("btn-logout").addEventListener("click", () => {
+  localStorage.removeItem(TOKEN_KEY);
+  showLogin();
+});
+document.getElementById("btn-logout-mobile").addEventListener("click", () => {
+  localStorage.removeItem(TOKEN_KEY);
+  showLogin();
+});
+
+const burger = document.getElementById("burgerBtn");
+const mobileNav = document.getElementById("mobileNav");
+if (burger && mobileNav) {
+  burger.addEventListener("click", () => {
+    const open = !mobileNav.classList.contains("open");
+    mobileNav.classList.toggle("open", open);
+    burger.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+}
+function closeMobileNav() {
+  if (!mobileNav || !burger) return;
+  mobileNav.classList.remove("open");
+  burger.classList.remove("open");
+  burger.setAttribute("aria-expanded", "false");
+}
+
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
+  });
+});
+
+async function refreshStats() {
+  const s = await api("/api/admin/stats");
+  const pend = s.pending_registrations != null ? s.pending_registrations : 0;
+  document.getElementById("stats").innerHTML = `
+    <div class="stat-card"><strong>${pend}</strong><span>Заявки на проверке</span></div>
+    <div class="stat-card"><strong>${s.clients}</strong><span>Клиенты</span></div>
+    <div class="stat-card"><strong>${s.helpers}</strong><span>Помощники</span></div>
+    <div class="stat-card"><strong>${s.orders}</strong><span>Заказы</span></div>
+    <div class="stat-card"><strong>${s.blocked}</strong><span>Заблокированы</span></div>`;
+}
+
+async function refreshPending() {
+  const { profiles } = await api("/api/admin/profiles");
+  const pending = (profiles || []).filter((p) => (p.registration_status || "approved") === "pending");
+  const tb = document.getElementById("tbody-pending");
+  if (!pending.length) {
+    tb.innerHTML =
+      '<tr><td colspan="7" class="cell-muted">Нет заявок на проверке.</td></tr>';
+    return;
+  }
+  tb.innerHTML = pending
+    .map(
+      (p) => `
+    <tr>
+      <td>${p.user_id}</td>
+      <td><span class="badge ${p.role === "helper" ? "badge--helper" : "badge--client"}">${p.role === "helper" ? "Помощница" : "Клиентка"}</span></td>
+      <td>${esc(p.name)}</td>
+      <td>${esc(p.phone)}</td>
+      <td class="cell-muted">${esc(p.email)}</td>
+      <td class="cell-muted">${esc(p.created_at)}</td>
+      <td>
+        <button type="button" class="btn btn--primary btn--sm" data-app="${p.user_id}">Одобрить</button>
+        <button type="button" class="btn btn--outline btn--sm" data-rej="${p.user_id}">Отклонить</button>
+      </td>
+    </tr>`
+    )
+    .join("");
+  tb.querySelectorAll("button[data-app]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = Number(btn.dataset.app);
+      try {
+        await api("/api/admin/users/" + id, {
+          method: "PATCH",
+          body: JSON.stringify({ registration_status: "approved" }),
+        });
+        await refreshAll();
+      } catch (e) {
+        alert(e.message);
+      }
+    });
+  });
+  tb.querySelectorAll("button[data-rej]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = Number(btn.dataset.rej);
+      if (!confirm("Отклонить заявку? Пользователь не сможет войти.")) return;
+      try {
+        await api("/api/admin/users/" + id, {
+          method: "PATCH",
+          body: JSON.stringify({ registration_status: "rejected" }),
+        });
+        await refreshAll();
+      } catch (e) {
+        alert(e.message);
+      }
+    });
+  });
+}
+
+let selectedAdminThreadId = null;
+
+async function refreshChatThreads() {
+  const { threads } = await api("/api/admin/chat/threads");
+  const box = document.getElementById("chat-thread-list");
+  const list = threads || [];
+  if (!list.length) {
+    box.innerHTML = '<p class="cell-muted" style="padding:var(--space-4)">Переписок пока нет.</p>';
+    selectedAdminThreadId = null;
+    document.getElementById("chat-admin-messages").innerHTML = "";
+    return;
+  }
+  box.innerHTML = list
+    .map((t) => {
+      const active = selectedAdminThreadId === t.id ? " is-active" : "";
+      const title = `${esc(t.name_low)} ↔ ${esc(t.name_high)}`;
+      const prev = t.last_preview ? esc(t.last_preview).slice(0, 80) : "—";
+      return `<button type="button" class="chat-thread-item${active}" data-tid="${t.id}">
+        ${title}<small>${prev}</small>
+      </button>`;
+    })
+    .join("");
+  box.querySelectorAll(".chat-thread-item").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      selectedAdminThreadId = Number(btn.dataset.tid);
+      box.querySelectorAll(".chat-thread-item").forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      await loadAdminChatMessages();
+    });
+  });
+  if (selectedAdminThreadId && !list.some((t) => t.id === selectedAdminThreadId)) {
+    selectedAdminThreadId = null;
+  }
+  if (!selectedAdminThreadId && list.length) {
+    selectedAdminThreadId = list[0].id;
+  }
+  if (selectedAdminThreadId) {
+    box.querySelector(`[data-tid="${selectedAdminThreadId}"]`)?.classList.add("is-active");
+    await loadAdminChatMessages();
+  }
+}
+
+async function loadAdminChatMessages() {
+  const el = document.getElementById("chat-admin-messages");
+  if (!selectedAdminThreadId) {
+    el.innerHTML = "";
+    return;
+  }
+  const { messages } = await api("/api/admin/chat/threads/" + selectedAdminThreadId + "/messages");
+  el.innerHTML = (messages || [])
+    .map((m) => {
+      const staff = Number(m.from_staff) === 1;
+      const cls = staff ? "chat-bubble chat-bubble--staff chat-bubble--other" : "chat-bubble chat-bubble--other";
+      return `<div><div class="chat-meta">${esc(m.sender_name)} · ${esc(m.created_at)}</div><div class="${cls}">${esc(m.body)}</div></div>`;
+    })
+    .join("");
+  el.scrollTop = el.scrollHeight;
+}
+
+document.getElementById("chat-admin-send")?.addEventListener("click", async () => {
+  const ta = document.getElementById("chat-admin-input");
+  const text = ta && ta.value.trim();
+  if (!text || !selectedAdminThreadId) return;
+  try {
+    await api("/api/admin/chat/threads/" + selectedAdminThreadId + "/messages", {
+      method: "POST",
+      body: JSON.stringify({ body: text }),
+    });
+    ta.value = "";
+    await refreshChatThreads();
+    await loadAdminChatMessages();
+  } catch (e) {
+    alert(e.message);
+  }
+});
+
+async function refreshProfiles() {
+  const { profiles } = await api("/api/admin/profiles");
+  const tb = document.getElementById("tbody-profiles");
+  tb.innerHTML = profiles
+    .map((p) => {
+      const roleClass = p.role === "helper" ? "badge--helper" : "badge--client";
+      const blocked = Number(p.is_blocked) === 1;
+      const btnLabel = blocked ? "Разблокировать" : "Заблокировать";
+      const rs = p.registration_status || "approved";
+      let rsHtml = "";
+      if (rs === "pending") rsHtml = '<br><span class="badge badge--pending">на проверке</span>';
+      else if (rs === "rejected") rsHtml = '<br><span class="badge badge--rejected">отклонена</span>';
+      return `<tr>
+        <td>${p.user_id}</td>
+        <td><span class="badge ${roleClass}">${p.role === "helper" ? "Помощник" : "Клиент"}</span>
+          ${rsHtml}
+          ${blocked ? '<br><span class="badge badge--blocked">стоп</span>' : ""}</td>
+        <td>${esc(p.name)}</td>
+        <td>${esc(p.phone)}</td>
+        <td class="cell-muted">${esc(p.email)}</td>
+        <td class="cell-muted">${esc(p.city)}</td>
+        <td class="cell-muted">${esc(p.bio)}</td>
+        <td class="cell-muted">${esc(p.skills)}</td>
+        <td class="cell-muted">${esc(p.availability_start)} — ${esc(p.availability_end)}<br>дежурство: ${p.on_duty ? "да" : "нет"}</td>
+        <td><button type="button" class="btn btn--outline btn--sm" data-user="${p.user_id}" data-block="${blocked ? 0 : 1}">${btnLabel}</button></td>
+      </tr>`;
+    })
+    .join("");
+
+  tb.querySelectorAll("button[data-user]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = Number(btn.dataset.user);
+      const block = Number(btn.dataset.block) === 1;
+      try {
+        await api("/api/admin/users/" + id, {
+          method: "PATCH",
+          body: JSON.stringify({ is_blocked: block }),
+        });
+        await refreshAll();
+      } catch (e) {
+        alert(e.message);
+      }
+    });
+  });
+}
+
+async function refreshOrders() {
+  const { orders } = await api("/api/admin/orders");
+  const tb = document.getElementById("tbody-orders");
+  tb.innerHTML = orders
+    .map((o) => {
+      const rs = o.reschedule_status || "—";
+      return `<tr>
+        <td>${o.id}</td>
+        <td>${esc(o.status)}</td>
+        <td>${esc(o.order_date)}</td>
+        <td>${esc(o.client_name)}<br><span class="cell-muted">${esc(o.client_phone)}</span></td>
+        <td>${esc(o.helper_name || "—")}</td>
+        <td class="cell-muted">${esc(o.tariff)}</td>
+        <td class="cell-muted">${esc(o.reschedule_requested_date || "—")}<br>${esc(rs)}</td>
+        <td>
+          <button type="button" class="btn btn--outline btn--sm" data-oid="${o.id}" data-act="done">Завершить</button>
+          <button type="button" class="btn btn--outline btn--sm" data-oid="${o.id}" data-act="appr">Одобрить перенос</button>
+        </td>
+      </tr>`;
+    })
+    .join("");
+
+  tb.querySelectorAll("button[data-oid]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = Number(btn.dataset.oid);
+      const act = btn.dataset.act;
+      const body =
+        act === "done"
+          ? { status: "done" }
+          : { reschedule_status: "approved" };
+      try {
+        await api("/api/admin/orders/" + id, { method: "PATCH", body: JSON.stringify(body) });
+        await refreshOrders();
+        await refreshStats();
+      } catch (e) {
+        alert(e.message);
+      }
+    });
+  });
+}
+
+let settingsCache = {};
+
+function applySettingsToggle() {
+  const reg = document.getElementById("tog-reg");
+  const appr = document.getElementById("tog-approval");
+  const maint = document.getElementById("tog-maint");
+  reg.classList.toggle("on", settingsCache.registration_open !== "0");
+  if (appr) appr.classList.toggle("on", settingsCache.require_registration_approval !== "0");
+  maint.classList.toggle("on", settingsCache.maintenance_mode === "1");
+}
+
+async function refreshSettings() {
+  const { settings } = await api("/api/admin/settings");
+  settingsCache = settings;
+  applySettingsToggle();
+}
+
+async function saveSetting(key, value) {
+  await api("/api/admin/settings", {
+    method: "PUT",
+    body: JSON.stringify({ settings: { [key]: value } }),
+  });
+  settingsCache[key] = value;
+}
+
+document.getElementById("tog-reg").addEventListener("click", async () => {
+  const on = !document.getElementById("tog-reg").classList.contains("on");
+  try {
+    await saveSetting("registration_open", on ? "1" : "0");
+    applySettingsToggle();
+  } catch (e) {
+    alert(e.message);
+  }
+});
+
+document.getElementById("tog-maint").addEventListener("click", async () => {
+  const on = !document.getElementById("tog-maint").classList.contains("on");
+  try {
+    await saveSetting("maintenance_mode", on ? "1" : "0");
+    applySettingsToggle();
+  } catch (e) {
+    alert(e.message);
+  }
+});
+
+document.getElementById("tog-approval")?.addEventListener("click", async () => {
+  const on = !document.getElementById("tog-approval").classList.contains("on");
+  try {
+    await saveSetting("require_registration_approval", on ? "1" : "0");
+    applySettingsToggle();
+  } catch (e) {
+    alert(e.message);
+  }
+});
+
+async function refreshAll() {
+  await refreshStats();
+  await refreshPending();
+  await refreshProfiles();
+  await refreshOrders();
+  await refreshSettings();
+  try {
+    await refreshChatThreads();
+  } catch (chatErr) {
+    const lt = chatErr && chatErr.message ? chatErr.message : String(chatErr);
+    const box = document.getElementById("chat-thread-list");
+    const msgs = document.getElementById("chat-admin-messages");
+    if (box) {
+      box.innerHTML =
+        '<p class="cell-muted" style="padding:var(--space-4)">Раздел «Чаты» не подключился к API. Залейте на Railway актуальный <code>server.js</code> (маршруты <code>/api/admin/chat/…</code>) и перезапустите сервис.</p>';
+    }
+    if (msgs) msgs.innerHTML = "";
+    selectedAdminThreadId = null;
+    showAppBanner(
+      "Остальные вкладки загружены. Чаты: " + lt,
+      "pending"
+    );
+  }
+}
+
+(async function boot() {
+  const t = localStorage.getItem(TOKEN_KEY);
+  if (!t) return showLogin();
+  try {
+    const me = await api("/api/admin/me");
+    if (!me || !me.admin) throw new Error("Некорректный ответ /api/admin/me");
+    showAppBanner("");
+    showDash();
+    document.getElementById("dash-email").textContent = me.admin.email;
+    try {
+      await refreshAll();
+    } catch (loadErr) {
+      const lt = loadErr && loadErr.message ? loadErr.message : String(loadErr);
+      showAppBanner("Не удалось загрузить таблицы: " + lt, true);
+    }
+  } catch (e) {
+    localStorage.removeItem(TOKEN_KEY);
+    showLogin();
+    const errText =
+      e && e.message
+        ? e.message
+        : "Сессия недействительна или не удалось загрузить данные. Войдите снова.";
+    document.getElementById("login-msg").innerHTML =
+      '<div class="msg msg--err">' + esc(errText) + "</div>";
+    showAppBanner(errText, true);
+  }
+})();
+</script>
+</body>
+</html>

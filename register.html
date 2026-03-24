@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Стать помощницей — Тепло рядом">
+<title>Стать помощницей — Тепло рядом</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+(function () {
+  var fb = "https://teplo-ryadom-api-production.up.railway.app";
+  window.TR_API_BASE = fb;
+  window.resolveTeploApiBase = function () {
+    var t = typeof window.TR_API_BASE === "string" ? window.TR_API_BASE.trim() : "";
+    return (t || fb).replace(/\/$/, "");
+  };
+})();
+</script>
+<script src="site-config.js?v=4"></script>
+
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=VOMyqN8zSynVCp9Al8HdN_ziULEYL2QHiWPMr9WhnIjJGzLdlZRMfcYjjZMtlDxFsTFM52I5Dk9c-h7ZdLDaE8Pr1aW0kcrRpW9vvf78uxEnBHfzcpscA-GHIrMKvE2bm2o8iaYH6x9WozF4l1WfBtQt-9bxz7FWJjlQudGAJgMk--_THGdfKlN_8Rjxad6IeczK10opDsIRkAvnYd_Yt5QLbV8is5U1qEs_2l2BLrqyrO4tjd4ZNP1MsL7s9_xp_EHI7hOuVVqXDaCSpUaOOfr3wXj7m74ohkN1kLnRnOC6nHOXMaKOb09YvLUWlCbpOdQmwCOXfTQdKhlf-NjsEh3CLPEsqz_Fpna10twrbMGz0i8UXG2SaB2vnXp-Pyhcgs0dXJKfhms9lwZWDTySXefyDzROtyV9VQqTn0jvXTd5BQHaS0Yokk0OoYcxDOpvXSHA7nheIJ2HKOt0SG55zhG1WvvRYftO4ZMxpZVYrvqkbNo_fkSPEGeI5lon4HrQ-4G9zrl8iJ9yW--2Mnw0jMGOsptcxq37a-J2c2aUDIwnwYvxsQoYMX4NTGxF7MAo6Uc-zuildoK-YezD9QSxaDToWV3-yg9OECNSmJXJ3g7uQ5ZKNARJNO_UCy9P5_zCZJmPTHjHcsTo2ZIJVuwID6xQsbyFaQx98Gy3zKs67VgUP5fD3DGT5tIf5kEGwMmNRonlXWO3G-xskQmPsv3czKZPU9IpmfBbzUiD-I3hHI8Ayg8FmjYQjCAt5rm0MhWhRsLqXi6Bu2275OkbUVS-TmRoVib63Tqr9wMOjSvfq5gfs0Pw_qCElHhMJSkQaok-LJyvipLL7gg6igeHZZhgSivPBNJr6mcjA5gbhdq7P84EEerbMNkUjl0V_LAn8gVxc-PIsg0WaHEd2EvdsCTi1D4HpiuQFO-lDIxYx_pb2UmtTUrjgH6ViULa7WIr2aOxHUNEmQ5Qa3nTlUJu8l8Cyty3vGAOm6tnrAA_WcQc3cBArDn7frGz3CPGw8IuP1FsheKQYmMXRXquY_nAngcWM3-VdUEgTvOIb5RfD6zVw0rfVXSvJ5EhLKFaYau1N00Noa9kwvBELVA5z_0THQYExd4lKJwxuUpjx-ChujyFbIR-l_s_Qw7mn919T0NrQkt1WKAV6JeolNtPx7lzt9WhebH9iJpYRyvVArBzUgKJEjGsGkP_eGkDRwEGQIuuWTb7y747cYxCIAZt_dsmzTXWRJWj60vXnTY73m8lBofabPZO--iCfq37EX3ljzGUvHwk_LphS5KIAONAeCUnf174v8jxCinYFJ06a6T3b9Qn-1RIwzFj34NCH9g1Zjul5othKW0S9i5GT98LhHWfKvByWtXziHHi2_aZMADHmhrvWPxldrak3FWtA6fwFu8-6GhBe5OX8BvFLe-gGRnvRgDWBuTxfLb2TMKZeFf7nUb0tAPWizcG2CR3R2aOqsoeFMMko18M0cpd11RzkHjMYp6De9WzBxVgxM5iqfR6DBcOqVuoyWeeUBOHukdltNDnvN-ZnK2hBctV4kjaht8612YH5dWRd8uXJn7cM7b6pPYsN5Zctzhn9FiFWwZIaNel0HPmiaLuXQQdk65QGo2wbI3dfMRyAYn4sYLrOFy1LeXKGuDLemPAc60cH_GpQx0zASd11hVy0QNI3-ZkWgn6C_SXDefgSnF-CVf4--JqBTnYIu_IIHDHz0yuulBCq-cT3eW38odDVBM-DHDyqJAsI44misetfm6rkVcDUfnpzDXynhEl3xnY3A2jvqWQhLONaOL1QZlvvQCn_OCrFqZgSftGHEeXshMJazDbhvwA0QbeU9BUYvukSJdJCrcPuKih6YT1B2DAOhnSqew7YIZMbV5uQS5jf2_YzZQdydFA2jelT7LUXkiX_Tv4L3p7TxsOk5T0Km7_BTCGWgh12IHCVlX3IfFZI4wc7rwF260QtNglh92aJOnzJQc02q3JSe6Mox_tMupKHpu0iQnP-LvRlzZ6CdyKNtirlupzF4gK2GUoaYT2NaGNkJiJzV7lwf-RabiQjvCVk5hS_LadHjmufIyIA7XJUc_3I0fmsdSVTRVt3cQFNWGp7td6GHksCZ6v2n-hjMANp0xQQAKcb5H54hU8ALykr8G-3yWeW3Ibh2qF9Vn4u0YdylDWlb_xy2D6IHEAS7FKDxBr8lZ5pRdbhrmvEdQ6OB5HO0sqeTRg-7u62ZI" charset="UTF-8"></script><style>
+/* ===== TOKENS ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Jost', 'Helvetica Neue', sans-serif;
+
+  --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+  --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+  --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+  --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+  --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+
+  --space-1:0.25rem; --space-2:0.5rem;  --space-3:0.75rem;
+  --space-4:1rem;    --space-5:1.25rem; --space-6:1.5rem;
+  --space-8:2rem;    --space-10:2.5rem; --space-12:3rem;
+  --space-16:4rem;
+
+  --radius-sm:0.375rem; --radius-md:0.625rem;
+  --radius-lg:1rem;     --radius-xl:1.5rem; --radius-full:9999px;
+  --transition:200ms cubic-bezier(0.16,1,0.3,1);
+
+  --color-bg:            #fdf8f5;
+  --color-surface:       #fff9f6;
+  --color-surface-2:     #fffcfa;
+  --color-surface-offset:#f8eeea;
+  --color-divider:       #edddd8;
+  --color-border:        #e5d4ce;
+  --color-text:          #2e1f1a;
+  --color-text-muted:    #7a5e57;
+  --color-text-faint:    #b89b94;
+  --color-text-inverse:  #fff9f6;
+  --color-primary:       #9b4f40;
+  --color-primary-hover: #7e3c30;
+  --color-primary-hl:    #f2deda;
+  --color-rose:          #c8877a;
+  --color-rose-light:    #f0cdc8;
+  --color-rose-lighter:  #f8ecea;
+  --color-gold:          #c8923d;
+  --color-green:         #5a9a5a;
+  --color-red-soft:      #c0534a;
+
+  --shadow-sm:0 1px 3px oklch(0.25 0.06 20/0.06);
+  --shadow-md:0 4px 16px oklch(0.25 0.06 20/0.09);
+  --shadow-lg:0 12px 40px oklch(0.25 0.06 20/0.13);
+
+  --content-default:680px;
+  --content-wide:1100px;
+}
+
+[data-theme="dark"] {
+  --color-bg:            #1a1210;
+  --color-surface:       #201714;
+  --color-surface-2:     #251c18;
+  --color-surface-offset:#1e1511;
+  --color-divider:       #2e201c;
+  --color-border:        #3a2620;
+  --color-text:          #e8d8d2;
+  --color-text-muted:    #a08078;
+  --color-text-faint:    #6a4f48;
+  --color-text-inverse:  #1a1210;
+  --color-primary:       #d47c6c;
+  --color-primary-hover: #e8917e;
+  --color-primary-hl:    #3d2420;
+  --color-rose:          #c47f72;
+  --color-rose-light:    #4a2e28;
+  --color-rose-lighter:  #2e1c18;
+  --color-gold:          #d4a05a;
+  --shadow-sm:0 1px 3px oklch(0 0 0/0.25);
+  --shadow-md:0 4px 16px oklch(0 0 0/0.35);
+  --shadow-lg:0 12px 40px oklch(0 0 0/0.45);
+}
+
+/* ===== BASE ===== */
+html { scroll-behavior:smooth; scroll-padding-top:72px; -webkit-font-smoothing:antialiased; hanging-punctuation:first last; }
+body { font-family:var(--font-body); font-size:var(--text-base); color:var(--color-text); background:var(--color-bg); min-height:100dvh; line-height:1.65; overflow-x:hidden; }
+a { text-decoration:none; color:inherit; }
+button { cursor:pointer; border:none; background:none; font-family:inherit; color:inherit; }
+img,svg { display:block; max-width:100%; }
+::selection { background:var(--color-primary-hl); color:var(--color-text); }
+:focus-visible { outline:2px solid var(--color-primary); outline-offset:3px; border-radius:var(--radius-sm); }
+
+/* ===== SCROLL PROGRESS ===== */
+.scroll-progress { position:fixed; top:0; left:0; z-index:200; height:3px; width:0%; background:linear-gradient(90deg,var(--color-rose-light),var(--color-rose),var(--color-primary),var(--color-gold),var(--color-primary),var(--color-rose)); background-size:300% 100%; transition:width 0.1s linear; border-radius:0 2px 2px 0; }
+
+/* ===== HEADER ===== */
+.header { position:sticky; top:0; z-index:100; background:oklch(from var(--color-bg) l c h/0.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid transparent; transition:border-color var(--transition),box-shadow var(--transition); }
+.header.scrolled { border-color:var(--color-divider); box-shadow:var(--shadow-sm); }
+.header-inner { display:flex; align-items:center; justify-content:space-between; padding-block:var(--space-4); max-width:var(--content-wide); margin-inline:auto; padding-inline:var(--space-6); gap:var(--space-4); }
+.logo { display:flex; align-items:center; gap:var(--space-3); }
+.logo-icon { color:var(--color-primary); flex-shrink:0; }
+.logo-text .name { font-family:var(--font-display); font-size:var(--text-lg); font-weight:600; color:var(--color-text); line-height:1; }
+.logo-text .tagline { font-size:var(--text-xs); color:var(--color-text-muted); margin-top:2px; }
+.header-actions { display:flex; align-items:center; gap:var(--space-3); }
+.desktop-only { display:flex; }
+@media(max-width:1024px){
+  .desktop-only{display:none!important;}
+  .burger{display:flex!important;}
+  .header-inner{padding-inline:var(--space-4);}
+  .logo-text .tagline{display:none;}
+}
+.burger { display:none; flex-direction:column; gap:5px; width:44px; height:44px; align-items:center; justify-content:center; }
+.burger span { display:block; width:22px; height:1.5px; background:var(--color-text); border-radius:2px; transition:transform var(--transition),opacity var(--transition); }
+.burger.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity:0; }
+.burger.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
+.mobile-nav { display:none; position:fixed; inset:0; top:65px; z-index:90; background:var(--color-bg); padding:var(--space-8) var(--space-6); flex-direction:column; gap:var(--space-6); border-top:1px solid var(--color-divider); animation:slideDown 0.25s cubic-bezier(0.16,1,0.3,1); }
+.mobile-nav.open { display:flex; }
+.mobile-nav a { font-size:var(--text-lg); font-weight:500; color:var(--color-text); padding-block:var(--space-2); }
+@keyframes slideDown { from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;} }
+
+/* ===== BUTTONS ===== */
+.btn { display:inline-flex; align-items:center; gap:var(--space-2); padding:var(--space-3) var(--space-6); border-radius:var(--radius-full); font-size:var(--text-sm); font-weight:500; font-family:var(--font-body); transition:all var(--transition); white-space:nowrap; cursor:pointer; }
+.btn--primary { background:var(--color-primary); color:var(--color-text-inverse); box-shadow:0 2px 8px oklch(from var(--color-primary) l c h/0.3); }
+.btn--primary:hover { background:var(--color-primary-hover); box-shadow:0 4px 16px oklch(from var(--color-primary) l c h/0.4); transform:translateY(-1px); }
+.btn--primary:active { transform:translateY(0); }
+.btn--outline { background:transparent; color:var(--color-primary); border:1.5px solid var(--color-rose); }
+.btn--outline:hover { background:var(--color-rose-lighter); border-color:var(--color-primary); }
+.btn--ghost { background:var(--color-rose-lighter); color:var(--color-primary); }
+.btn--ghost:hover { background:var(--color-primary-hl); }
+.btn--gift { background:var(--color-rose-lighter); color:var(--color-primary); border:1.5px solid var(--color-rose-light); }
+.btn--gift:hover { background:var(--color-primary-hl); border-color:var(--color-rose); }
+.btn--icon { width:40px; height:40px; padding:0; justify-content:center; border-radius:var(--radius-full); background:var(--color-surface-offset); color:var(--color-text-muted); }
+.btn--icon:hover { background:var(--color-primary-hl); color:var(--color-primary); }
+.btn--sm { padding:var(--space-2) var(--space-4); font-size:var(--text-xs); }
+.btn--back { background:transparent; color:var(--color-text-muted); border:1.5px solid var(--color-border); }
+.btn--back:hover { background:var(--color-surface-offset); color:var(--color-text); }
+.btn--full { width:100%; justify-content:center; }
+
+/* ===== PAGE HERO ===== */
+.page-hero { text-align:center; padding:clamp(36px,6vw,56px) var(--space-6) var(--space-8); background:linear-gradient(160deg,var(--color-surface-offset) 0%,var(--color-bg) 100%); position:relative; overflow:hidden; }
+.page-hero::before { content:''; position:absolute; top:-80px; right:-80px; width:240px; height:240px; border-radius:50%; background:oklch(from var(--color-rose) l c h/0.10); pointer-events:none; }
+.page-hero::after { content:''; position:absolute; bottom:-60px; left:-60px; width:200px; height:200px; border-radius:50%; background:oklch(from var(--color-primary) l c h/0.06); pointer-events:none; }
+.page-hero .eyebrow { display:inline-flex; align-items:center; gap:var(--space-2); padding:var(--space-2) var(--space-4); margin-bottom:var(--space-4); background:var(--color-rose-lighter); border:1px solid var(--color-rose-light); border-radius:var(--radius-full); font-size:var(--text-xs); font-weight:500; color:var(--color-primary); position:relative; z-index:1; }
+.page-hero h1 { font-family:var(--font-display); font-size:var(--text-xl); font-weight:600; color:var(--color-text); margin-bottom:var(--space-3); position:relative; z-index:1; }
+.page-hero h1 em { font-style:italic; color:var(--color-primary); }
+.page-hero p { font-size:var(--text-sm); color:var(--color-text-muted); max-width:500px; margin:0 auto; line-height:1.7; position:relative; z-index:1; }
+
+/* ===== STEPPER ===== */
+.stepper-wrap { padding:var(--space-6) var(--space-6) var(--space-2); max-width:700px; margin-inline:auto; }
+.stepper { display:flex; align-items:center; justify-content:center; }
+.step-dot { display:flex; flex-direction:column; align-items:center; gap:var(--space-2); flex:1; }
+.step-dot-circle { width:42px; height:42px; border-radius:50%; border:2px solid var(--color-rose-light); background:var(--color-surface); color:var(--color-text-faint); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:600; transition:all var(--transition); position:relative; z-index:1; }
+.step-dot.active .step-dot-circle { background:var(--color-primary); border-color:var(--color-primary); color:var(--color-text-inverse); box-shadow:0 4px 12px oklch(from var(--color-primary) l c h/0.3); }
+.step-dot.done .step-dot-circle { background:var(--color-green); border-color:var(--color-green); color:white; }
+.step-dot-label { font-size:11px; font-weight:500; color:var(--color-text-faint); white-space:nowrap; }
+.step-dot.active .step-dot-label { color:var(--color-primary); font-weight:600; }
+.step-dot.done .step-dot-label { color:var(--color-green); }
+.step-connector { flex:1; height:2px; background:var(--color-rose-light); margin-bottom:22px; max-width:80px; transition:background var(--transition); }
+.step-connector.done { background:var(--color-green); }
+
+/* ===== LAYOUT ===== */
+.form-wrap { max-width:var(--content-default); margin:var(--space-6) auto var(--space-16); padding-inline:var(--space-6); }
+
+/* ===== FORM CARD ===== */
+.form-card { background:var(--color-surface); border-radius:var(--radius-xl); border:1px solid var(--color-border); box-shadow:var(--shadow-md); padding:var(--space-8); }
+.form-step { display:none; animation:fadeIn 0.35s ease; }
+.form-step.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;} }
+.step-heading { font-family:var(--font-display); font-size:var(--text-lg); font-weight:600; color:var(--color-text); margin-bottom:var(--space-1); }
+.step-sub { font-size:var(--text-sm); color:var(--color-text-muted); margin-bottom:var(--space-6); line-height:1.6; }
+
+/* ===== FORM ELEMENTS ===== */
+.form-group { margin-bottom:var(--space-5); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-4); }
+.form-label { display:block; font-size:var(--text-sm); font-weight:500; color:var(--color-text); margin-bottom:var(--space-2); }
+.required { color:var(--color-red-soft); margin-left:2px; }
+.form-input, .form-select, .form-textarea { width:100%; padding:var(--space-3) var(--space-4); border:1.5px solid var(--color-border); border-radius:var(--radius-md); background:var(--color-bg); color:var(--color-text); font:var(--text-sm)/1.5 var(--font-body); transition:border-color var(--transition),box-shadow var(--transition); outline:none; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--color-rose); box-shadow:0 0 0 3px oklch(from var(--color-rose) l c h/0.15); }
+.form-input::placeholder, .form-textarea::placeholder { color:var(--color-text-faint); }
+.form-input.error, .form-select.error, .form-textarea.error { border-color:var(--color-red-soft); }
+.form-error { font-size:var(--text-xs); color:var(--color-red-soft); margin-top:var(--space-1); display:none; }
+.form-error.show { display:block; }
+.form-textarea { resize:vertical; min-height:90px; }
+.form-select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a08078' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; cursor:pointer; }
+.field-section { margin-bottom:var(--space-6); }
+.field-section-title { font-size:var(--text-sm); font-weight:600; color:var(--color-text); margin-bottom:var(--space-3); display:flex; align-items:center; gap:var(--space-2); }
+.field-section-title i { color:var(--color-rose); }
+.badge-new { display:inline-flex; align-items:center; padding:1px 8px; border-radius:var(--radius-full); background:oklch(from var(--color-green) l c h/0.12); color:var(--color-green); font-size:10px; font-weight:700; margin-left:4px; }
+
+/* ===== CHIPS ===== */
+.skills-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-2); }
+.skill-chip { display:flex; align-items:center; gap:var(--space-3); padding:var(--space-3) var(--space-4); border:1.5px solid var(--color-border); border-radius:var(--radius-md); cursor:pointer; transition:all var(--transition); font-size:var(--text-sm); color:var(--color-text-muted); user-select:none; background:var(--color-bg); }
+.skill-chip:hover { border-color:var(--color-rose); color:var(--color-text); background:var(--color-rose-lighter); }
+.skill-chip.selected { border-color:var(--color-primary); background:var(--color-primary-hl); color:var(--color-text); font-weight:500; }
+.chip-check { width:20px; height:20px; border-radius:5px; border:1.5px solid var(--color-rose-light); display:flex; align-items:center; justify-content:center; font-size:11px; color:transparent; transition:all var(--transition); flex-shrink:0; }
+.skill-chip.selected .chip-check { background:var(--color-primary); border-color:var(--color-primary); color:white; }
+.chip-icon { font-size:15px; color:var(--color-rose); flex-shrink:0; }
+.skill-chip.selected .chip-icon { color:var(--color-primary); }
+
+/* Days */
+.days-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:var(--space-2); }
+.day-chip { text-align:center; padding:var(--space-3) var(--space-2); border:1.5px solid var(--color-border); border-radius:var(--radius-md); cursor:pointer; font-size:12px; font-weight:600; color:var(--color-text-faint); transition:all var(--transition); user-select:none; background:var(--color-bg); }
+.day-chip:hover { border-color:var(--color-rose); color:var(--color-text); }
+.day-chip.selected { background:var(--color-primary); border-color:var(--color-primary); color:white; box-shadow:0 2px 8px oklch(from var(--color-primary) l c h/0.3); }
+
+/* Help type cards */
+.help-type-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--space-3); }
+.help-type-card { padding:var(--space-4) var(--space-3); border:2px solid var(--color-border); border-radius:var(--radius-lg); cursor:pointer; text-align:center; background:var(--color-bg); transition:all var(--transition); user-select:none; }
+.help-type-card:hover { border-color:var(--color-rose); background:var(--color-rose-lighter); }
+.help-type-card.selected { border-color:var(--color-primary); background:var(--color-primary-hl); }
+.help-type-card .ht-icon { font-size:28px; margin-bottom:var(--space-2); display:block; }
+.help-type-card h4 { font-size:13px; font-weight:600; color:var(--color-text); margin-bottom:3px; }
+.help-type-card p { font-size:11px; color:var(--color-text-muted); line-height:1.4; }
+
+/* ===== PHOTO UPLOAD ===== */
+.photo-upload { display:flex; align-items:center; gap:var(--space-6); margin-bottom:var(--space-6); }
+.photo-preview { width:100px; height:100px; border-radius:50%; background:var(--color-surface-offset); border:2px dashed var(--color-rose-light); display:flex; align-items:center; justify-content:center; font-size:32px; color:var(--color-rose); flex-shrink:0; overflow:hidden; transition:all var(--transition); cursor:pointer; position:relative; }
+.photo-preview:hover { border-color:var(--color-primary); background:var(--color-primary-hl); }
+.photo-preview img { width:100%; height:100%; object-fit:cover; display:none; }
+.photo-preview.has-photo { border-style:solid; border-color:var(--color-rose); }
+.photo-preview.has-photo img { display:block; }
+.photo-preview.has-photo i { display:none; }
+.photo-info h4 { font-size:var(--text-sm); font-weight:600; color:var(--color-text); margin-bottom:4px; }
+.photo-info p { font-size:var(--text-xs); color:var(--color-text-muted); line-height:1.6; }
+input[type="file"] { display:none; }
+
+/* ===== SOCIAL LINKS ===== */
+.social-grid { display:flex; flex-direction:column; gap:var(--space-3); }
+.social-row { display:grid; grid-template-columns:44px 1fr; gap:var(--space-3); align-items:center; }
+.social-icon-wrap { width:44px; height:44px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.si-tg  { background:#2ca5e020; color:#2ca5e0; }
+.si-vk  { background:#4a76a820; color:#4a76a8; }
+.si-ig  { background:#e1306c20; color:#e1306c; }
+.si-yt  { background:#ff000020; color:#ff0000; }
+.si-ok  { background:#ee8208;   color:white; }
+.social-input-wrap { position:relative; }
+.social-input-wrap .form-input { padding-left:var(--space-4); }
+.social-hint { font-size:var(--text-xs); color:var(--color-text-faint); margin-top:var(--space-1); }
+
+.social-why { background:var(--color-rose-lighter); border:1px solid var(--color-rose-light); border-radius:var(--radius-lg); padding:var(--space-4) var(--space-5); margin-bottom:var(--space-5); display:flex; align-items:flex-start; gap:var(--space-3); }
+.social-why .sw-icon { font-size:26px; flex-shrink:0; margin-top:2px; }
+.social-why p { font-size:var(--text-xs); color:var(--color-text-muted); line-height:1.7; }
+.social-why strong { color:var(--color-primary); }
+
+/* ===== PREVIEW CARD ===== */
+.preview-card { background:var(--color-surface-offset); border-radius:var(--radius-lg); padding:var(--space-5) var(--space-6); margin-bottom:var(--space-5); }
+.preview-header { display:flex; align-items:center; gap:var(--space-4); margin-bottom:var(--space-4); }
+.preview-avatar { width:60px; height:60px; border-radius:50%; background:var(--color-rose-light); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--color-primary); overflow:hidden; flex-shrink:0; border:2px solid var(--color-rose-light); }
+.preview-avatar img { width:100%; height:100%; object-fit:cover; display:none; }
+.preview-avatar.has-photo img { display:block; }
+.preview-avatar.has-photo i { display:none; }
+.preview-name { font-family:var(--font-display); font-size:var(--text-lg); font-weight:600; color:var(--color-text); line-height:1.2; }
+.preview-meta { font-size:var(--text-xs); color:var(--color-text-muted); margin-top:2px; }
+.preview-row { display:flex; justify-content:space-between; padding:var(--space-2) 0; border-bottom:1px dashed var(--color-divider); font-size:var(--text-xs); gap:var(--space-4); }
+.preview-row:last-child { border-bottom:none; }
+.preview-key { color:var(--color-text-muted); }
+.preview-val { font-weight:600; color:var(--color-text); text-align:right; max-width:65%; }
+.preview-tags { display:flex; flex-wrap:wrap; gap:4px; justify-content:flex-end; }
+.preview-tag { padding:2px 8px; background:var(--color-primary-hl); border-radius:var(--radius-full); font-size:11px; color:var(--color-primary); }
+
+/* ===== TERMS ===== */
+.terms-row { display:flex; align-items:flex-start; gap:var(--space-3); margin-bottom:var(--space-5); cursor:pointer; }
+.terms-check-box { width:22px; height:22px; border-radius:5px; border:2px solid var(--color-rose); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all var(--transition); margin-top:1px; }
+.terms-check-box.checked { background:var(--color-primary); border-color:var(--color-primary); color:white; }
+.terms-text { font-size:var(--text-xs); color:var(--color-text-muted); line-height:1.7; }
+.terms-text a { color:var(--color-primary); font-weight:600; border-bottom:1px dashed var(--color-rose); }
+
+/* ===== FORM NAV ===== */
+.form-nav { display:flex; justify-content:space-between; align-items:center; margin-top:var(--space-8); gap:var(--space-3); }
+.form-nav .btn { min-width:140px; }
+
+/* ===== SUCCESS ===== */
+.success-screen { display:none; text-align:center; padding:var(--space-12) var(--space-6); }
+.success-screen.active { display:block; animation:fadeIn 0.5s ease; }
+.success-icon { width:90px; height:90px; border-radius:50%; background:oklch(from var(--color-green) l c h/0.12); display:flex; align-items:center; justify-content:center; margin:0 auto var(--space-6); font-size:40px; color:var(--color-green); }
+.success-screen h2 { font-family:var(--font-display); font-size:var(--text-xl); font-weight:600; color:var(--color-text); margin-bottom:var(--space-3); }
+.success-screen > p { font-size:var(--text-sm); color:var(--color-text-muted); max-width:420px; margin:0 auto var(--space-8); line-height:1.7; }
+.next-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-4); margin-bottom:var(--space-8); text-align:left; }
+.next-step { background:var(--color-surface-offset); border-radius:var(--radius-lg); padding:var(--space-4); }
+.ns-num { width:32px; height:32px; border-radius:50%; background:var(--color-primary-hl); color:var(--color-primary); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; margin-bottom:var(--space-3); }
+.ns-title { font-size:13px; font-weight:600; color:var(--color-text); margin-bottom:3px; }
+.ns-desc { font-size:11px; color:var(--color-text-muted); line-height:1.5; }
+
+/* ===== FOOTER ===== */
+.footer { background:var(--color-text); color:var(--color-text-inverse); padding-block:var(--space-8); }
+.footer-inner { max-width:var(--content-wide); margin-inline:auto; padding-inline:var(--space-6); display:flex; align-items:center; justify-content:space-between; gap:var(--space-8); flex-wrap:wrap; }
+.footer-brand .name { font-family:var(--font-display); font-size:var(--text-lg); font-weight:600; color:white; }
+.footer-brand .tagline { font-size:var(--text-xs); color:var(--color-rose); margin-top:2px; }
+.footer-copy { font-size:var(--text-xs); opacity:.5; }
+.footer-links { display:flex; gap:var(--space-6); }
+.footer-links a { font-size:var(--text-xs); opacity:.6; transition:opacity var(--transition); }
+.footer-links a:hover { opacity:1; color:var(--color-rose); }
+
+/* ===== TOAST ===== */
+.toast { position:fixed; bottom:var(--space-8); left:50%; z-index:600; transform:translateX(-50%) translateY(20px); background:var(--color-text); color:var(--color-text-inverse); padding:var(--space-3) var(--space-6); border-radius:var(--radius-full); font-size:var(--text-sm); font-weight:500; display:flex; align-items:center; gap:var(--space-3); box-shadow:var(--shadow-lg); pointer-events:none; opacity:0; transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.toast i { color:var(--color-rose); }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px) {
+  .form-card { padding:var(--space-6) var(--space-5); }
+  .form-row { grid-template-columns:1fr; }
+  .skills-grid { grid-template-columns:1fr; }
+  .days-grid { grid-template-columns:repeat(4,1fr); }
+  .help-type-grid { grid-template-columns:1fr; }
+  .next-steps { grid-template-columns:1fr; }
+  .photo-upload { flex-direction:column; text-align:center; }
+  .footer-inner { flex-direction:column; gap:var(--space-4); text-align:center; }
+  .footer-links { justify-content:center; }
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" width="34" height="34" viewBox="0 0 36 36" fill="none" aria-label="Логотип">
+        <path d="M18 31S5 23 5 14a7 7 0 0 1 13-3.5A7 7 0 0 1 31 14c0 9-13 17-13 17Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M18 10.5c0 0-2-4-6-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+      </svg>
+      <div class="logo-text">
+        <div class="name">Тепло рядом</div>
+        <div class="tagline">Забота рядом, когда она нужна</div>
+      </div>
+    </a>
+    <div class="header-actions">
+      <button class="btn btn--icon" data-theme-toggle aria-label="Сменить тему">
+        <i class="fa-regular fa-moon"></i>
+      </button>
+      <a href="gift.html" class="btn btn--gift desktop-only">
+        <i class="fa-solid fa-gift"></i> Подарить заботу
+      </a>
+      <a href="cabinet.html" class="btn btn--outline desktop-only">
+        <i class="fa-solid fa-user"></i> Личный кабинет
+      </a>
+      <a href="order.html" class="btn btn--outline desktop-only">
+        <i class="fa-solid fa-heart"></i> Получить помощь
+      </a>
+      <button class="burger" id="burgerBtn" aria-label="Меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html"><i class="fa-solid fa-house"></i> На главную</a>
+  <a href="order.html"><i class="fa-solid fa-heart"></i> Получить помощь</a>
+  <a href="gift.html"><i class="fa-solid fa-gift"></i> Подарить заботу</a>
+  <a href="cabinet.html"><i class="fa-solid fa-user"></i> Личный кабинет</a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="page-hero">
+  <div class="eyebrow"><i class="fa-solid fa-star"></i> Анкета помощницы</div>
+  <h1>Стать <em>тёплой женщиной</em> рядом</h1>
+  <p>Заполните анкету — и начните помогать другим. Это займёт около 5 минут.</p>
+</section>
+
+<!-- ===== STEPPER ===== -->
+<div class="stepper-wrap">
+  <div class="stepper">
+    <div class="step-dot active" data-n="1">
+      <div class="step-dot-circle" id="sc1">1</div>
+      <div class="step-dot-label">О себе</div>
+    </div>
+    <div class="step-connector" id="conn1"></div>
+    <div class="step-dot" data-n="2">
+      <div class="step-dot-circle" id="sc2">2</div>
+      <div class="step-dot-label">Навыки</div>
+    </div>
+    <div class="step-connector" id="conn2"></div>
+    <div class="step-dot" data-n="3">
+      <div class="step-dot-circle" id="sc3">3</div>
+      <div class="step-dot-label">Расписание</div>
+    </div>
+    <div class="step-connector" id="conn3"></div>
+    <div class="step-dot" data-n="4">
+      <div class="step-dot-circle" id="sc4">4</div>
+      <div class="step-dot-label">Соцсети</div>
+    </div>
+    <div class="step-connector" id="conn4"></div>
+    <div class="step-dot" data-n="5">
+      <div class="step-dot-circle" id="sc5">5</div>
+      <div class="step-dot-label">Финал</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FORM ===== -->
+<div class="form-wrap">
+  <div class="form-card" id="formCard">
+
+    <!-- ══════════ STEP 1: О СЕБЕ ══════════ -->
+    <div class="form-step active" id="step1">
+      <h2 class="step-heading">Расскажите о себе</h2>
+      <p class="step-sub">Эта информация будет видна клиентам в вашей анкете.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="firstName">Имя <span class="required">*</span></label>
+          <input type="text" class="form-input" id="firstName" placeholder="Ваше имя">
+          <div class="form-error" id="firstNameError">Укажите имя</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="lastName">Фамилия <span class="required">*</span></label>
+          <input type="text" class="form-input" id="lastName" placeholder="Ваша фамилия">
+          <div class="form-error" id="lastNameError">Укажите фамилию</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="age">Возраст <span class="required">*</span></label>
+          <input type="number" class="form-input" id="age" placeholder="от 18" min="18" max="70">
+          <div class="form-error" id="ageError">Укажите возраст (от 18)</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="city">Город <span class="required">*</span></label>
+          <input type="text" class="form-input" id="city" placeholder="Ваш город">
+          <div class="form-error" id="cityError">Укажите город</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="phone">Телефон <span class="required">*</span></label>
+          <input type="tel" class="form-input" id="phone" placeholder="+7 ___ ___ __ __">
+          <div class="form-error" id="phoneError">Укажите телефон</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input type="email" class="form-input" id="email" placeholder="you@mail.ru">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="district">Район / станция метро</label>
+        <input type="text" class="form-input" id="district" placeholder="Например: Центр, м. Арбат, Северный район...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="about">Несколько слов о себе</label>
+        <textarea class="form-textarea" id="about" placeholder="Кто вы, чем увлекаетесь, почему хотите помогать…"></textarea>
+      </div>
+
+      <div class="form-nav">
+        <div></div>
+        <button class="btn btn--primary" onclick="nextStep(1)">Далее <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- ══════════ STEP 2: НАВЫКИ ══════════ -->
+    <div class="form-step" id="step2">
+      <h2 class="step-heading">Ваши навыки и возможности</h2>
+      <p class="step-sub">Отметьте всё, что умеете и готовы делать. Можно выбрать несколько.</p>
+
+      <div class="field-section">
+        <div class="field-section-title"><i class="fa-solid fa-spa"></i> Личная забота</div>
+        <div class="skills-grid" id="skillsGrid">
+          <div class="skill-chip" data-skill="massage" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-spa chip-icon"></i> Массаж
+          </div>
+          <div class="skill-chip" data-skill="cooking" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-utensils chip-icon"></i> Приготовить еду
+          </div>
+          <div class="skill-chip" data-skill="haircare" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-scissors chip-icon"></i> Уход за волосами
+          </div>
+          <div class="skill-chip" data-skill="bath" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-bath chip-icon"></i> Помочь с ванной / душем
+          </div>
+          <div class="skill-chip" data-skill="aromatherapy" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-wind chip-icon"></i> Ароматерапия
+          </div>
+          <div class="skill-chip" data-skill="conversation" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-comments chip-icon"></i> Поговорить, поддержать
+          </div>
+          <div class="skill-chip" data-skill="childescort" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-child-reaching chip-icon"></i> Сопровождение ребёнка <span class="badge-new">новое</span>
+          </div>
+          <div class="skill-chip" data-skill="petcare" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-paw chip-icon"></i> Забота о питомце <span class="badge-new">новое</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-section">
+        <div class="field-section-title"><i class="fa-solid fa-house"></i> Помощь по дому</div>
+        <div class="skills-grid">
+          <div class="skill-chip" data-skill="cleaning" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-broom chip-icon"></i> Уборка
+          </div>
+          <div class="skill-chip" data-skill="laundry" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-shirt chip-icon"></i> Стирка / глажка
+          </div>
+          <div class="skill-chip" data-skill="childcare" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-baby chip-icon"></i> Уход за малышом
+          </div>
+          <div class="skill-chip" data-skill="shopping" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-bag-shopping chip-icon"></i> Покупки / аптека
+          </div>
+          <div class="skill-chip" data-skill="breastfeeding" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-heart-pulse chip-icon"></i> Поддержка ГВ
+          </div>
+          <div class="skill-chip" data-skill="homecare" onclick="toggleChip(this)">
+            <span class="chip-check"><i class="fa-solid fa-check"></i></span>
+            <i class="fa-solid fa-house chip-icon"></i> Забота о доме в отъезд <span class="badge-new">новое</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-error" id="skillsError">Выберите хотя бы один навык</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="experience">Опыт помощи</label>
+          <select class="form-select" id="experience">
+            <option value="">Выберите...</option>
+            <option value="none">Нет, но хочу попробовать</option>
+            <option value="1-2">1–2 года</option>
+            <option value="3-5">3–5 лет</option>
+            <option value="5+">Более 5 лет</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Тип помощи <span class="required">*</span></label>
+          <div class="help-type-grid" id="helpTypeGrid">
+            <div class="help-type-card selected" data-ht="paid" onclick="selectHelpType(this)">
+              <span class="ht-icon">💼</span>
+              <h4>Платная</h4>
+              <p>За вознаграждение</p>
+            </div>
+            <div class="help-type-card" data-ht="free" onclick="selectHelpType(this)">
+              <span class="ht-icon">💛</span>
+              <h4>Безвозмездная</h4>
+              <p>По зову сердца</p>
+            </div>
+            <div class="help-type-card" data-ht="both" onclick="selectHelpType(this)">
+              <span class="ht-icon">🌸</span>
+              <h4>Оба варианта</h4>
+              <p>Смотрю по ситуации</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn btn--back" onclick="prevStep(2)"><i class="fa-solid fa-arrow-left"></i> Назад</button>
+        <button class="btn btn--primary" onclick="nextStep(2)">Далее <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- ══════════ STEP 3: РАСПИСАНИЕ ══════════ -->
+    <div class="form-step" id="step3">
+      <h2 class="step-heading">Когда вы доступны?</h2>
+      <p class="step-sub">Укажите удобные дни и время — клиенты увидят ваше расписание.</p>
+
+      <div class="field-section">
+        <div class="field-section-title"><i class="fa-regular fa-calendar"></i> Дни недели <span class="required">*</span></div>
+        <div class="days-grid" id="daysGrid">
+          <div class="day-chip" data-day="mon" onclick="toggleDay(this)">Пн</div>
+          <div class="day-chip" data-day="tue" onclick="toggleDay(this)">Вт</div>
+          <div class="day-chip" data-day="wed" onclick="toggleDay(this)">Ср</div>
+          <div class="day-chip" data-day="thu" onclick="toggleDay(this)">Чт</div>
+          <div class="day-chip" data-day="fri" onclick="toggleDay(this)">Пт</div>
+          <div class="day-chip" data-day="sat" onclick="toggleDay(this)">Сб</div>
+          <div class="day-chip" data-day="sun" onclick="toggleDay(this)">Вс</div>
+        </div>
+        <div class="form-error" id="daysError">Выберите хотя бы один день</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="timeFrom">Время с</label>
+          <select class="form-select" id="timeFrom">
+            <option value="08:00">08:00</option><option value="09:00" selected>09:00</option>
+            <option value="10:00">10:00</option><option value="11:00">11:00</option>
+            <option value="12:00">12:00</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="timeTo">Время до</label>
+          <select class="form-select" id="timeTo">
+            <option value="15:00">15:00</option><option value="16:00">16:00</option>
+            <option value="17:00">17:00</option><option value="18:00" selected>18:00</option>
+            <option value="19:00">19:00</option><option value="20:00">20:00</option>
+            <option value="21:00">21:00</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="canUrgent">Срочные вызовы</label>
+        <select class="form-select" id="canUrgent">
+          <option value="no">Нет, только по записи</option>
+          <option value="yes">Да, готова приехать срочно</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="canTravel">Могу выехать в отъезд</label>
+        <select class="form-select" id="canTravel">
+          <option value="no">Нет</option>
+          <option value="yes">Да — присмотрю за домом, питомцем</option>
+          <option value="maybe">Готова обсудить</option>
+        </select>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn btn--back" onclick="prevStep(3)"><i class="fa-solid fa-arrow-left"></i> Назад</button>
+        <button class="btn btn--primary" onclick="nextStep(3)">Далее <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- ══════════ STEP 4: СОЦСЕТИ ══════════ -->
+    <div class="form-step" id="step4">
+      <h2 class="step-heading">Ваши соцсети</h2>
+      <p class="step-sub">Необязательно, но очень важно — именно здесь клиентки находят своего человека.</p>
+
+      <div class="social-why">
+        <div class="sw-icon">💬</div>
+        <p>Публикации, стиль жизни, музыка, подписки — всё это помогает найти <strong>своего человека</strong>, которому можно довериться и впустить в свой дом. Клиентки смотрят ваши страницы, чтобы почувствовать — <strong>своя ли вы?</strong></p>
+      </div>
+
+      <div class="social-grid">
+        <div class="social-row">
+          <div class="social-icon-wrap si-tg"><i class="fa-brands fa-telegram"></i></div>
+          <div>
+            <input type="text" class="form-input" id="socTg" placeholder="@username или ссылка">
+            <div class="social-hint">Telegram — самый популярный способ связи</div>
+          </div>
+        </div>
+        <div class="social-row">
+          <div class="social-icon-wrap si-vk"><i class="fa-brands fa-vk"></i></div>
+          <div>
+            <input type="text" class="form-input" id="socVk" placeholder="vk.com/username или ссылка">
+            <div class="social-hint">ВКонтакте — посты, фото, интересы</div>
+          </div>
+        </div>
+        <div class="social-row">
+          <div class="social-icon-wrap si-ig"><i class="fa-brands fa-instagram"></i></div>
+          <div>
+            <input type="text" class="form-input" id="socIg" placeholder="@username или ссылка">
+            <div class="social-hint">Instagram / фото-дневник жизни</div>
+          </div>
+        </div>
+        <div class="social-row">
+          <div class="social-icon-wrap si-yt" style="font-size:14px;font-weight:700;">OK</div>
+          <div>
+            <input type="text" class="form-input" id="socOk" placeholder="ok.ru/profile или ссылка">
+            <div class="social-hint">Одноклассники</div>
+          </div>
+        </div>
+        <div class="social-row">
+          <div class="social-icon-wrap si-yt"><i class="fa-brands fa-youtube"></i></div>
+          <div>
+            <input type="text" class="form-input" id="socYt" placeholder="Ссылка на ваш канал">
+            <div class="social-hint">YouTube-канал или видео-блог</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:var(--space-6);">
+        <label class="form-label" for="hobbies">Увлечения и интересы</label>
+        <input type="text" class="form-input" id="hobbies" placeholder="Кулинария, йога, рукоделие, садоводство…">
+      </div>
+
+      <div class="form-nav">
+        <button class="btn btn--back" onclick="prevStep(4)"><i class="fa-solid fa-arrow-left"></i> Назад</button>
+        <button class="btn btn--primary" onclick="nextStep(4)">Далее <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- ══════════ STEP 5: ФИНАЛ ══════════ -->
+    <div class="form-step" id="step5">
+      <h2 class="step-heading">Фото и ваша история</h2>
+      <p class="step-sub">Последний шаг — фото и немного о том, почему вы хотите помогать.</p>
+
+      <div class="photo-upload">
+        <div class="photo-preview" id="photoPreview" onclick="document.getElementById('photoInput').click()" title="Нажмите для загрузки фото">
+          <i class="fa-solid fa-camera"></i>
+          <img id="photoImg" src="" alt="Фото анкеты">
+        </div>
+        <div class="photo-info">
+          <h4>Загрузите ваше фото</h4>
+          <p>Оно будет видно клиентам. Светлое, дружелюбное фото — лучшее первое впечатление.<br>Рекомендуем: чёткое, при дневном свете.</p>
+          <button class="btn btn--ghost btn--sm" style="margin-top:var(--space-3);" onclick="document.getElementById('photoInput').click()">
+            <i class="fa-solid fa-arrow-up-from-bracket"></i> Выбрать фото
+          </button>
+        </div>
+        <input type="file" id="photoInput" accept="image/*">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="regPassword">Пароль для личного кабинета <span class="required">*</span></label>
+          <input type="password" class="form-input" id="regPassword" autocomplete="new-password" placeholder="Не меньше 8 символов">
+          <div class="form-error" id="regPasswordError">Задайте пароль</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regPassword2">Повтор пароля <span class="required">*</span></label>
+          <input type="password" class="form-input" id="regPassword2" autocomplete="new-password" placeholder="Ещё раз">
+          <div class="form-error" id="regPassword2Error">Пароли не совпадают</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="motivation">Почему вы хотите помогать? <span class="required">*</span></label>
+        <textarea class="form-textarea" id="motivation" style="min-height:110px;" placeholder="Ваша история — почему решили стать помощницей, что вас вдохновляет, какой опыт привёл вас сюда…"></textarea>
+        <div class="form-error" id="motivationError">Расскажите немного о себе</div>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-card" id="previewCard">
+        <div style="font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);margin-bottom:var(--space-4);text-transform:uppercase;letter-spacing:1px;">Предпросмотр анкеты</div>
+        <div class="preview-header">
+          <div class="preview-avatar" id="previewAvatar">
+            <i class="fa-solid fa-user"></i>
+            <img id="previewAvatarImg" src="" alt="">
+          </div>
+          <div>
+            <div class="preview-name" id="previewName">Ваше имя</div>
+            <div class="preview-meta" id="previewMeta">Город · Возраст</div>
+          </div>
+        </div>
+        <div class="preview-row">
+          <span class="preview-key">Навыки</span>
+          <div class="preview-tags" id="previewSkillsTags"><span style="font-size:11px;color:var(--color-text-faint);font-style:italic;">будут здесь</span></div>
+        </div>
+        <div class="preview-row" id="pvDaysRow">
+          <span class="preview-key">Дни</span>
+          <span class="preview-val" id="previewDays">—</span>
+        </div>
+        <div class="preview-row" id="pvTimeRow">
+          <span class="preview-key">Время</span>
+          <span class="preview-val" id="previewTime">—</span>
+        </div>
+        <div class="preview-row" id="pvSocialRow" style="display:none;">
+          <span class="preview-key">Соцсети</span>
+          <div class="preview-tags" id="previewSocialTags"></div>
+        </div>
+      </div>
+
+      <!-- Terms -->
+      <div class="terms-row" id="termsRow" onclick="toggleTerms()">
+        <div class="terms-check-box" id="termsBox"></div>
+        <div class="terms-text">
+          Я согласна с <a href="#" onclick="event.preventDefault();showToast('Правила сообщества')">правилами сообщества</a>
+          и <a href="#" onclick="event.preventDefault();showToast('Политика конфиденциальности')">политикой конфиденциальности</a>.
+          Подтверждаю, что мне есть 18 лет и данные анкеты достоверны.
+        </div>
+      </div>
+      <div class="form-error" id="termsError">Необходимо принять условия</div>
+
+      <div class="form-nav">
+        <button class="btn btn--back" onclick="prevStep(5)"><i class="fa-solid fa-arrow-left"></i> Назад</button>
+        <button class="btn btn--primary" id="submitBtn" onclick="submitForm()">
+          <i class="fa-solid fa-paper-plane"></i> Отправить анкету
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════ SUCCESS ══════════ -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+      <h2>Анкета отправлена! 🌸</h2>
+      <p id="registerSuccessMsg">Мы рассмотрим её в течение 24 часов. Ответ придёт на указанный телефон или email.</p>
+      <div class="next-steps">
+        <div class="next-step">
+          <div class="ns-num">1</div>
+          <div class="ns-title">Проверка анкеты</div>
+          <div class="ns-desc">Модератор просматривает данные и соцсети в течение 24 ч</div>
+        </div>
+        <div class="next-step">
+          <div class="ns-num">2</div>
+          <div class="ns-title">Звонок-знакомство</div>
+          <div class="ns-desc">Короткий видеозвонок, чтобы познакомиться и ответить на вопросы</div>
+        </div>
+        <div class="next-step">
+          <div class="ns-num">3</div>
+          <div class="ns-title">Первый заказ</div>
+          <div class="ns-desc">Появляетесь в каталоге и получаете первое приглашение</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:var(--space-3);justify-content:center;margin-top:var(--space-4);">
+        <a href="cabinet.html" class="btn btn--outline" id="successCabinetLink" style="display:none">
+          <i class="fa-solid fa-user"></i> Войти в кабинет
+        </a>
+        <a href="index.html" class="btn btn--primary" style="margin-inline:auto;">
+          <i class="fa-solid fa-house"></i> На главную
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /form-card -->
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="name">Тепло рядом</div>
+      <div class="tagline">Забота из изобилия</div>
+    </div>
+    <p class="footer-copy">© 2026 Тепло рядом</p>
+    <nav class="footer-links">
+      <a href="index.html">Главная</a>
+      <a href="order.html">Получить помощь</a>
+      <a href="gift.html">Подарить заботу</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="toast" id="toast"><i class="fa-regular fa-heart"></i><span id="toastText"></span></div>
+
+<script>
+// ===== DARK MODE =====
+(function(){
+  const btn=document.querySelector('[data-theme-toggle]'),root=document.documentElement;
+  let t='light';
+  root.setAttribute('data-theme','light');
+  const upIcon=()=>{ if(btn) btn.innerHTML=t==='dark'?'<i class="fa-regular fa-sun"></i>':'<i class="fa-regular fa-moon"></i>'; };
+  upIcon();
+  if(btn) btn.addEventListener('click',()=>{ t=t==='dark'?'light':'dark'; root.setAttribute('data-theme',t); upIcon(); });
+})();
+
+// ===== SCROLL =====
+window.addEventListener('scroll',()=>{
+  const p=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+  document.getElementById('scrollProgress').style.width=Math.min(p,100)+'%';
+  document.getElementById('header').classList.toggle('scrolled',window.scrollY>20);
+},{passive:true});
+
+// ===== BURGER =====
+const burgerBtn=document.getElementById('burgerBtn'),mobileNav=document.getElementById('mobileNav');
+burgerBtn.addEventListener('click',()=>{ const o=mobileNav.classList.toggle('open'); burgerBtn.classList.toggle('open',o); burgerBtn.setAttribute('aria-expanded',String(o)); });
+
+// ===== TOAST =====
+function showToast(msg){
+  const t=document.getElementById('toast'); document.getElementById('toastText').textContent=msg;
+  t.classList.add('show'); clearTimeout(t._to); t._to=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ===== STATE =====
+let currentStep=1;
+const skillNames={massage:'Массаж',cooking:'Готовка',haircare:'Причёска',bath:'Ванна/душ',aromatherapy:'Ароматерапия',conversation:'Поддержка',childescort:'Дети',petcare:'Питомец',cleaning:'Уборка',laundry:'Стирка',childcare:'Малыш',shopping:'Покупки',breastfeeding:'ГВ',homecare:'Отъезд'};
+const dayNames={mon:'Пн',tue:'Вт',wed:'Ср',thu:'Чт',fri:'Пт',sat:'Сб',sun:'Вс'};
+
+// ===== STEPPER =====
+function updateStepper(n){
+  for(let i=1;i<=5;i++){
+    const dot=document.querySelector('.step-dot[data-n="'+i+'"]');
+    const c=document.getElementById('sc'+i);
+    dot.classList.remove('active','done');
+    if(i<n){dot.classList.add('done');c.innerHTML='<i class="fa-solid fa-check"></i>';}
+    else if(i===n){dot.classList.add('active');c.textContent=i;}
+    else c.textContent=i;
+    if(i<5) document.getElementById('conn'+i).classList.toggle('done',i<n);
+  }
+}
+
+// ===== NAVIGATE =====
+function showStep(n){
+  document.querySelectorAll('.form-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  updateStepper(n); currentStep=n;
+  if(n===5) updatePreview();
+  window.scrollTo({top:180,behavior:'smooth'});
+}
+function nextStep(from){ if(validate(from)) showStep(from+1); }
+function prevStep(from){ if(from>1) showStep(from-1); }
+
+// ===== CHIPS =====
+function toggleChip(el){
+  el.classList.toggle('selected');
+  updatePreview();
+}
+function toggleDay(el){ el.classList.toggle('selected'); updatePreview(); }
+function selectHelpType(el){
+  document.querySelectorAll('.help-type-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ===== TERMS =====
+function toggleTerms(){
+  document.getElementById('termsBox').classList.toggle('checked');
+  document.getElementById('termsError').classList.remove('show');
+}
+
+// ===== VALIDATION =====
+function validate(step){
+  let ok=true;
+  document.querySelectorAll('.form-input.error,.form-select.error,.form-textarea.error').forEach(e=>e.classList.remove('error'));
+  document.querySelectorAll('.form-error.show').forEach(e=>e.classList.remove('show'));
+
+  const req=(id,errId,msg)=>{
+    const el=document.getElementById(id);
+    if(!el||!el.value.trim()){
+      if(el) el.classList.add('error');
+      const err=document.getElementById(errId); if(err){err.textContent=msg;err.classList.add('show');}
+      ok=false;
+    }
+  };
+
+  if(step===1){
+    req('firstName','firstNameError','Укажите имя');
+    req('lastName','lastNameError','Укажите фамилию');
+    const age=parseInt(document.getElementById('age').value);
+    if(!age||age<18){ document.getElementById('age').classList.add('error'); document.getElementById('ageError').classList.add('show'); ok=false; }
+    req('city','cityError','Укажите город');
+    req('phone','phoneError','Укажите телефон');
+  }
+  if(step===2){
+    const sel=document.querySelectorAll('.skill-chip.selected');
+    if(!sel.length){ document.getElementById('skillsError').classList.add('show'); ok=false; }
+  }
+  if(step===3){
+    const days=document.querySelectorAll('.day-chip.selected');
+    if(!days.length){ document.getElementById('daysError').classList.add('show'); ok=false; }
+  }
+  if(!ok) showToast('Пожалуйста, заполните все обязательные поля');
+  return ok;
+}
+
+// ===== PREVIEW (step 5) =====
+function updatePreview(){
+  const fn=document.getElementById('firstName').value||'Имя';
+  const ln=document.getElementById('lastName').value||'Фамилия';
+  const c=document.getElementById('city').value||'Город';
+  const a=document.getElementById('age').value||'—';
+  document.getElementById('previewName').textContent=fn+' '+ln;
+  document.getElementById('previewMeta').textContent=c+' · '+a+' лет';
+
+  const skills=[...document.querySelectorAll('.skill-chip.selected')].map(e=>skillNames[e.dataset.skill]||e.dataset.skill);
+  const tagsEl=document.getElementById('previewSkillsTags');
+  tagsEl.innerHTML=skills.length?skills.slice(0,5).map(s=>`<span class="preview-tag">${s}</span>`).join('')+(skills.length>5?`<span class="preview-tag">+${skills.length-5}</span>`:''): '<span style="font-size:11px;color:var(--color-text-faint);font-style:italic;">будут здесь</span>';
+
+  const days=[...document.querySelectorAll('.day-chip.selected')].map(e=>dayNames[e.dataset.day]);
+  document.getElementById('previewDays').textContent=days.length?days.join(', '):'—';
+
+  const tf=document.getElementById('timeFrom').value, tt=document.getElementById('timeTo').value;
+  document.getElementById('previewTime').textContent=(tf&&tt)?tf+'–'+tt:'—';
+
+  const socials=[];
+  if(document.getElementById('socTg').value) socials.push('TG');
+  if(document.getElementById('socVk').value) socials.push('VK');
+  if(document.getElementById('socIg').value) socials.push('Inst');
+  if(document.getElementById('socOk').value) socials.push('OK');
+  if(document.getElementById('socYt').value) socials.push('YT');
+  const socRow=document.getElementById('pvSocialRow');
+  if(socials.length){
+    socRow.style.display='flex';
+    document.getElementById('previewSocialTags').innerHTML=socials.map(s=>`<span class="preview-tag">${s}</span>`).join('');
+  } else socRow.style.display='none';
+
+  // Avatar sync
+  const img=document.getElementById('photoImg');
+  const pav=document.getElementById('previewAvatar');
+  const paImg=document.getElementById('previewAvatarImg');
+  if(img.src&&img.style.display!=='none'){ paImg.src=img.src; pav.classList.add('has-photo'); }
+}
+
+// ===== API (анкета → сервер, иначе админка пустая) =====
+function getRegApiBase() {
+  if (typeof resolveTeploApiBase === "function") {
+    try {
+      return resolveTeploApiBase();
+    } catch (e) {}
+  }
+  var u =
+    (typeof window.TR_API_BASE === "string" ? window.TR_API_BASE.trim() : "") ||
+    "https://teplo-ryadom-api-production.up.railway.app";
+  u = u.replace(/\/+$/, "");
+  if (/\/api$/i.test(u)) u = u.replace(/\/api$/i, "");
+  return u.replace(/\/+$/, "");
+}
+
+async function registerApi(path, opts) {
+  const url = getRegApiBase() + path;
+  const r = await fetch(url, {
+    ...opts,
+    headers: { "Content-Type": "application/json", ...(opts.headers || {}) },
+    mode: "cors",
+    credentials: "omit",
+  });
+  const data = await r.json().catch(function () {
+    return {};
+  });
+  if (!r.ok) throw new Error(data.error || r.statusText || String(r.status));
+  return data;
+}
+
+function showRegisterFieldError(id, errId, show) {
+  var el = document.getElementById(id);
+  var err = document.getElementById(errId);
+  if (el) el.classList.toggle("error", show);
+  if (err) err.classList.toggle("show", show);
+}
+
+// ===== SUBMIT =====
+async function submitForm() {
+  document.querySelectorAll(".form-input.error,.form-select.error,.form-textarea.error").forEach(function (e) {
+    e.classList.remove("error");
+  });
+  document.querySelectorAll(".form-error.show").forEach(function (e) {
+    e.classList.remove("show");
+  });
+
+  if (!document.getElementById("motivation").value.trim()) {
+    document.getElementById("motivation").classList.add("error");
+    document.getElementById("motivationError").classList.add("show");
+    showToast("Расскажите немного о себе");
+    return;
+  }
+  if (!document.getElementById("termsBox").classList.contains("checked")) {
+    document.getElementById("termsError").classList.add("show");
+    showToast("Примите условия, чтобы продолжить");
+    return;
+  }
+
+  var pw = document.getElementById("regPassword").value;
+  var pw2 = document.getElementById("regPassword2").value;
+  var okPw = true;
+  if (pw.length < 8) {
+    showRegisterFieldError("regPassword", "regPasswordError", true);
+    showToast("Пароль не короче 8 символов");
+    okPw = false;
+  }
+  if (pw !== pw2) {
+    showRegisterFieldError("regPassword2", "regPassword2Error", true);
+    showToast("Пароли не совпадают");
+    okPw = false;
+  }
+  if (!okPw) return;
+
+  if (!validate(1) || !validate(2) || !validate(3)) {
+    showToast("Проверьте шаги анкеты — не все обязательные поля заполнены");
+    return;
+  }
+
+  var btn = document.getElementById("submitBtn");
+  if (btn && btn.disabled) return;
+  if (btn) {
+    btn.disabled = true;
+    btn.dataset._oldHtml = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Отправка…';
+  }
+
+  var firstName = document.getElementById("firstName").value.trim();
+  var lastName = document.getElementById("lastName").value.trim();
+  var name = (firstName + " " + lastName).trim();
+  var phone = document.getElementById("phone").value.trim();
+  var email = document.getElementById("email").value.trim();
+  var city = document.getElementById("city").value.trim();
+  var age = document.getElementById("age").value.trim();
+  var district = document.getElementById("district").value.trim();
+  var about = document.getElementById("about").value.trim();
+  var motivation = document.getElementById("motivation").value.trim();
+
+  var skills = Array.prototype.slice
+    .call(document.querySelectorAll(".skill-chip.selected"))
+    .map(function (e) {
+      return skillNames[e.dataset.skill] || e.dataset.skill;
+    });
+  var days = Array.prototype.slice
+    .call(document.querySelectorAll(".day-chip.selected"))
+    .map(function (e) {
+      return dayNames[e.dataset.day];
+    });
+  var tf = document.getElementById("timeFrom").value;
+  var tt = document.getElementById("timeTo").value;
+  var expSel = document.getElementById("experience");
+  var expLabel = expSel && expSel.selectedOptions[0] ? expSel.selectedOptions[0].text : "";
+  var htEl = document.querySelector(".help-type-card.selected");
+  var helpType = htEl ? htEl.dataset.ht : "";
+  var urgent = document.getElementById("canUrgent").value;
+  var travel = document.getElementById("canTravel").value;
+  var hobbies = document.getElementById("hobbies").value.trim();
+
+  var socLines = [];
+  [["socTg", "TG"], ["socVk", "VK"], ["socIg", "IG"], ["socOk", "OK"], ["socYt", "YT"]].forEach(function (pair) {
+    var v = document.getElementById(pair[0]).value.trim();
+    if (v) socLines.push(pair[1] + ": " + v);
+  });
+
+  var volLine = "";
+  try {
+    if (new URLSearchParams(window.location.search).get("type") === "free") {
+      volLine = "Линия заявки: волонтёр (безвозмездно).\n";
+    }
+  } catch (e) {}
+
+  var notesParts = [
+    volLine,
+    "Опыт помощи: " + (expLabel || "—"),
+    "Тип помощи: " + (helpType || "—"),
+    "Срочные вызовы: " + (urgent === "yes" ? "да" : "нет"),
+    "Выезд/отъезд: " + (travel || "—"),
+    "Дни: " + (days.length ? days.join(", ") : "—"),
+  ];
+  if (hobbies) notesParts.push("Увлечения: " + hobbies);
+  if (socLines.length) notesParts.push("Соцсети:\n" + socLines.join("\n"));
+
+  var bioParts = [];
+  if (age) bioParts.push("Возраст: " + age);
+  if (about) bioParts.push(about);
+  bioParts.push("---");
+  bioParts.push(motivation);
+
+  var profile = {
+    city: city || null,
+    address: district || null,
+    bio: bioParts.join("\n\n"),
+    notes: notesParts.join("\n"),
+    skills: skills.join(", "),
+    availability_start: tf || null,
+    availability_end: tt || null,
+    on_duty: 0,
+  };
+
+  try {
+    var data = await registerApi("/api/auth/register", {
+      method: "POST",
+      body: JSON.stringify({
+        role: "helper",
+        name: name,
+        phone: phone,
+        email: email || null,
+        password: pw,
+        profile: profile,
+      }),
+    });
+
+    document.querySelectorAll(".form-step").forEach(function (s) {
+      s.classList.remove("active");
+    });
+    document.getElementById("successScreen").classList.add("active");
+    for (var i = 1; i <= 5; i++) {
+      var dot = document.querySelector('.step-dot[data-n="' + i + '"]');
+      dot.classList.remove("active");
+      dot.classList.add("done");
+      document.getElementById("sc" + i).innerHTML = '<i class="fa-solid fa-check"></i>';
+      if (i < 5) document.getElementById("conn" + i).classList.add("done");
+    }
+
+    var msgEl = document.getElementById("registerSuccessMsg");
+    var cab = document.getElementById("successCabinetLink");
+    if (data.pendingReview) {
+      if (msgEl) {
+        msgEl.textContent =
+          "Анкета сохранена на сервере. После одобрения в админ-панели вы сможете войти в личный кабинет с телефона и пароля. Администратору ушло уведомление (если настроена почта на сервере).";
+      }
+      if (cab) cab.style.display = "none";
+    } else {
+      if (msgEl) {
+        msgEl.textContent = "Регистрация завершена. Можно сразу войти в личный кабинет.";
+      }
+      if (cab) cab.style.display = "flex";
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (err) {
+    var t = err && err.message ? err.message : String(err);
+    if (t === "Failed to fetch" || (err && err.name === "TypeError")) {
+      t =
+        "Не удалось связаться с сервером. Проверьте интернет и что site-config.js указывает на ваш API (Railway). Откройте в браузере: " +
+        getRegApiBase() +
+        "/health";
+    }
+    showToast(t);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      if (btn.dataset._oldHtml) btn.innerHTML = btn.dataset._oldHtml;
+    }
+  }
+}
+
+// ===== PHOTO UPLOAD =====
+document.getElementById('photoInput').addEventListener('change',function(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  if(file.size>5*1024*1024){ showToast('Файл слишком большой (макс. 5 МБ)'); return; }
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=document.getElementById('photoImg');
+    img.src=ev.target.result; img.style.display='block';
+    document.getElementById('photoPreview').classList.add('has-photo');
+    showToast('Фото загружено!');
+    updatePreview();
+  };
+  reader.readAsDataURL(file);
+});
+
+// ===== PHONE MASK =====
+document.getElementById('phone').addEventListener('input',function(e){
+  let v=e.target.value.replace(/\D/g,'');
+  if(!v){e.target.value='';return;}
+  if(v[0]==='8') v='7'+v.slice(1);
+  if(v[0]!=='7') v='7'+v;
+  let f='+7';
+  if(v.length>1) f+=' ('+v.slice(1,4);
+  if(v.length>4) f+=') '+v.slice(4,7);
+  if(v.length>7) f+='-'+v.slice(7,9);
+  if(v.length>9) f+='-'+v.slice(9,11);
+  e.target.value=f;
+});
+
+// ===== CLEAR ERRORS ON INPUT =====
+document.querySelectorAll('.form-input,.form-select,.form-textarea').forEach(el=>{
+  el.addEventListener('input',()=>{
+    el.classList.remove('error');
+    const err=el.parentElement.querySelector('.form-error');
+    if(err) err.classList.remove('show');
+    if(currentStep===5) updatePreview();
+  });
+  el.addEventListener('change',()=>{ if(currentStep===5) updatePreview(); });
+});
+
+// Live preview update from step 1-4 fields too
+['firstName','lastName','city','age'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el) el.addEventListener('input',updatePreview);
+});
+['timeFrom','timeTo'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el) el.addEventListener('change',updatePreview);
+});
+['socTg','socVk','socIg','socOk','socYt'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el) el.addEventListener('input',updatePreview);
+});
+</script>
+</body>
+</html>

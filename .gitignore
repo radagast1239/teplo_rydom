@@ -1,0 +1,20 @@
+# Зависимости
+node_modules/
+
+# Секреты и локальная БД (на Railway БД своя)
+.env
+.env.*
+!.env.example
+*.db
+app.db
+
+# Логи и ОС
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Railway CLI (локальная привязка)
+.railway/
+
+# Редактор
+.cursor/
