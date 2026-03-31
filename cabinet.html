@@ -673,58 +673,14 @@ h1,h2,h3,h4{text-wrap:balance;line-height:1.2;}
           Мои заказы
           <small>Предстоящие и выполненные</small>
         </h2>
-        <div class="orders-list">
-          <div class="order-card">
-            <div class="order-header">
-              <div class="order-header-left">
-                <span class="order-number">#2045</span>
-                <span class="status-badge status--active">Предстоящий</span>
-              </div>
-              <span style="font-size:var(--text-xs);color:var(--color-text-muted);">25 марта 2026, 10:00</span>
-            </div>
-            <div class="order-body">
-              <div class="order-meta">
-                <div class="order-meta-item">
-                  <span class="label">Клиентка</span>
-                  <span class="value">Анна М.</span>
-                </div>
-                <div class="order-meta-item">
-                  <span class="label">Адрес</span>
-                  <span class="value">ул. Цветочная, 12</span>
-                </div>
-              </div>
-              <div class="order-services">
-                <span class="service-tag">Готовка</span>
-                <span class="service-tag">Уборка</span>
-                <span class="service-tag">Поддержка ГВ</span>
-              </div>
-              <div class="important-box">
-                <h4><i data-lucide="star" width="12" height="12"></i> Важное о клиентке</h4>
-                <div class="important-note">Аллергия на арахис</div>
-                <div class="important-note">Не звонить в домофон — спит ребёнок</div>
-                <div class="important-add">
-                  <input type="text" placeholder="Мои заметки об этой клиентке..." id="helperNote2045">
-                  <button class="btn btn--ghost btn--sm" onclick="addOrderNote('helper-2045')"><i data-lucide="plus" width="14" height="14"></i></button>
-                </div>
-              </div>
-              <a class="chat-link" href="#" onclick="showToast('Чат открывается...')">
-                <i data-lucide="message-circle" width="16" height="16"></i>
-                Переписка с Анной
-                <i data-lucide="arrow-right" width="14" height="14" style="margin-left:auto;"></i>
-              </a>
-              <div class="order-actions">
-                <button class="btn btn--ghost btn--sm" onclick="openRescheduleModal('2045')">
-                  <i data-lucide="calendar" width="13" height="13"></i>
-                  Перенести встречу
-                </button>
-                <button class="btn btn--outline btn--sm" onclick="cancelOrder('2045', false)" style="color:var(--color-text-muted);border-color:var(--color-border);">
-                  <i data-lucide="alert-triangle" width="13" height="13"></i>
-                  Отменить по болезни
-                </button>
-              </div>
-            </div>
-          </div>
+        <div class="profile-section">
+          <h3><i data-lucide="calendar" width="16" height="16"></i> Календарь моих дней</h3>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-3);">
+            Забронированные дни подсвечены. Лимиты: не больше одного заказа в тарифах «Золотая середина» и «Роскошный максимум» и не более двух заказов «Базовый минимум» в день.
+          </p>
+          <div id="helperCalendar" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:var(--text-xs);"></div>
         </div>
+        <div class="orders-list"></div>
       </div>
 
       <div class="content-panel" id="panel-messages">
@@ -1398,24 +1354,118 @@ function renderOrders(role, orders) {
   lucide.createIcons();
 }
 
+function buildHelperCalendar(orders) {
+  const cal = document.getElementById('helperCalendar');
+  if (!cal) return;
+  cal.innerHTML = '';
+
+  if (!orders || !orders.length) {
+    cal.innerHTML = '<div style="grid-column:1 / -1;font-size:var(--text-xs);color:var(--color-text-muted);text-align:center;">Пока нет заказов — календарь появится после первого.</div>';
+    return;
+  }
+
+  const firstWithDate = orders.find(o => o.order_date);
+  const base = firstWithDate ? new Date(firstWithDate.order_date) : new Date();
+  const year = base.getFullYear();
+  const month = base.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDow = new Date(year, month, 1).getDay() || 7;
+
+  const perDay = {};
+  orders.forEach(o => {
+    if (!o.order_date) return;
+    const d = new Date(o.order_date);
+    if (!d || isNaN(d.getTime())) return;
+    if (d.getMonth() !== month || d.getFullYear() !== year) return;
+    const dayKey = d.getDate();
+    const t = String(o.tariff || '');
+    const entry = perDay[dayKey] || { basic: 0, midLux: 0, items: [] };
+    if (t.includes('basic')) entry.basic += 1;
+    else if (t.includes('medium') || t.includes('luxury')) entry.midLux += 1;
+    entry.items.push({ id: o.id, tariff: t, order_date: o.order_date });
+    perDay[dayKey] = entry;
+  });
+
+  for (let i = 1; i < firstDow; i++) {
+    const cell = document.createElement('div');
+    cell.style.minHeight = '46px';
+    cal.appendChild(cell);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement('button');
+    cell.type = 'button';
+    cell.style.minHeight = '46px';
+    cell.style.borderRadius = '8px';
+    cell.style.border = '1px solid var(--color-border)';
+    cell.style.background = 'var(--color-surface)';
+    cell.style.padding = '4px 4px 6px';
+    cell.style.textAlign = 'left';
+    cell.style.cursor = 'pointer';
+
+    const info = perDay[d];
+    const has = !!info;
+    const basic = info ? info.basic : 0;
+    const midLux = info ? info.midLux : 0;
+
+    let bg = 'var(--color-surface)';
+    let border = 'var(--color-border)';
+    let dot = '';
+
+    if (has) {
+      bg = 'var(--color-primary-hl)';
+      border = 'var(--color-primary)';
+
+      if (midLux >= 1 || basic >= 2) {
+        bg = 'rgba(220, 102, 102, 0.15)';
+        border = 'rgba(220, 102, 102, 0.9)';
+      }
+      if (midLux >= 1 && basic >= 2) {
+        dot = '★';
+      } else if (midLux >= 1) {
+        dot = '✦';
+      } else if (basic >= 2) {
+        dot = '•';
+      }
+    }
+
+    cell.style.background = bg;
+    cell.style.borderColor = border;
+
+    cell.innerHTML = `
+      <div style="font-weight:600;font-size:11px;">${d}</div>
+      <div style="font-size:9px;color:var(--color-text-muted);margin-top:2px;">
+        ${has ? `${basic || 0} баз · ${midLux || 0} сред/макс` : '&nbsp;'}
+      </div>
+      ${dot ? `<div style="font-size:10px;margin-top:2px;color:var(--color-primary);">${dot}</div>` : ''}
+    `;
+
+    if (has) {
+      cell.addEventListener('click', () => {
+        const dayOrders = info.items
+          .map(item => `#${item.id} · ${item.tariff || 'тариф не указан'}`)
+          .join('\\n');
+        showToast(`Заказы на ${d}.${String(month + 1).padStart(2, '0')}: ${dayOrders}`);
+      });
+    } else {
+      cell.addEventListener('click', () => {
+        showToast('В этот день пока нет заказов');
+      });
+    }
+
+    cal.appendChild(cell);
+  }
+}
+
 function loadOrders() {
   if (!authToken || !currentUser) return;
   apiRequest('/api/orders')
     .then(({ orders }) => {
-      if (currentUser.role === 'client' && (!orders || orders.length === 0)) {
-        return apiRequest('/api/orders', {
-          method: 'POST',
-          body: JSON.stringify({
-            order_date: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 16).replace('T', ' '),
-            tariff: 'Золотая середина',
-            services: 'Готовка, Уборка, Поддержка ГВ',
-            important: 'Аллергия на арахис | Не звонить в домофон'
-          })
-        }).then(() => apiRequest('/api/orders')).then((r2) => {
-          renderOrders(currentUser.role, r2.orders || []);
-        });
+      const list = orders || [];
+      renderOrders(currentUser.role, list);
+      if (currentUser.role === 'helper') {
+        buildHelperCalendar(list);
       }
-      renderOrders(currentUser.role, orders || []);
     })
     .catch(() => showToast('Не удалось загрузить заказы'));
 }

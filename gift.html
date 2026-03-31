@@ -949,22 +949,88 @@ function updateSummary() {
 }
 
 // ── SUBMIT ────────────────────────────────────────────
-function submitOrder() {
+async function submitOrder() {
   if (!selectedCert) {
     showToast('Пожалуйста, выбери сертификат ☝️');
     document.getElementById('certificates').scrollIntoView({ behavior: 'smooth' });
     return;
   }
-  const name = (document.getElementById('senderName') || document.getElementById('wishlistName'));
-  if (name && !name.value.trim()) {
-    name.focus();
+  const nameInput = (document.getElementById('senderName') || document.getElementById('wishlistName'));
+  if (nameInput && !nameInput.value.trim()) {
+    nameInput.focus();
     showToast('Укажи своё имя 💕');
     return;
   }
+
+  const senderName = (document.getElementById('senderName') || {}).value || '';
+  const recipientName = (document.getElementById('recipientName') || {}).value || '';
+  const recipientEmail = (document.getElementById('recipientEmail') || {}).value || '';
+  const giftMessage = (document.getElementById('giftMessage') || {}).value || '';
+  const wishlistName = (document.getElementById('wishlistName') || {}).value || '';
+  const wishlistLink = (document.getElementById('wishlistLink') || {}).value || '';
+
+  const payload = {
+    cert_name: selectedCert.name,
+    amount: selectedCert.price || 0,
+    emoji: selectedCert.emoji || null,
+    from_name: senderName || wishlistName || null,
+    to_name: recipientName || null,
+    message: giftMessage || null,
+    delivery: deliveryMethod,
+    email: deliveryMethod === 'wishlist' ? null : (recipientEmail || null),
+    wishlist_name: deliveryMethod === 'wishlist' ? (wishlistName || null) : null,
+    wishlist_link: deliveryMethod === 'wishlist' ? (wishlistLink || null) : null
+  };
+
+  const btn = document.querySelector('#order-form .btn.btn--primary');
+  if (btn && btn.disabled) return;
+  if (btn) {
+    btn.disabled = true;
+    btn.dataset._oldText = btn.innerHTML;
+    btn.innerHTML = '<i data-lucide="loader-2" width="16" height="16" class="lucide lucide-loader-2" style="animation:spin 1s linear infinite;"></i> Обрабатываем...';
+  }
+
+  // Базовый URL API берём из site-config.js / fallback
+  let apiBase = '';
+  try {
+    if (typeof resolveTeploApiBase === 'function') {
+      apiBase = resolveTeploApiBase();
+    } else if (typeof window.TR_API_BASE === 'string') {
+      apiBase = window.TR_API_BASE.trim().replace(/\/+$/, '');
+    }
+  } catch (e) {}
+
+  try {
+    if (apiBase) {
+      const res = await fetch(apiBase + '/api/certificates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.error) {
+        showToast(data.error || 'Не удалось оформить сертификат, попробуйте позже');
+        if (btn) {
+          btn.disabled = false;
+          if (btn.dataset._oldText) btn.innerHTML = btn.dataset._oldText;
+        }
+        return;
+      }
+    }
+  } catch (e) {
+    // Если API недоступно, не блокируем UX — просто логируем в консоль
+    console.error('[gift] submit error:', e);
+  }
+
   // Show success
   document.getElementById('formBlock').style.display = 'none';
   document.getElementById('successScreen').classList.add('active');
   window.scrollTo({ top: document.getElementById('order-form').offsetTop - 80, behavior: 'smooth' });
+
+  if (btn) {
+    btn.disabled = false;
+    if (btn.dataset._oldText) btn.innerHTML = btn.dataset._oldText;
+  }
 }
 
 // ── RESET ─────────────────────────────────────────────

@@ -34,7 +34,7 @@ function startHttpServer() {
 }
 
 const JWT_SECRET = process.env.JWT_SECRET || "teplo_ryadom_dev_secret";
-const DB_PATH = path.join(__dirname, "app.db");
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, "app.db");
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || "traceur95@mail.ru";
 const ADMIN_SEED_EMAIL = (process.env.ADMIN_EMAIL || "traceur95@mail.ru").toLowerCase();
 const MAIL_NOTIFY_CHAT = String(process.env.MAIL_NOTIFY_CHAT || "1") === "1";
@@ -146,8 +146,8 @@ const allowCrossOrigin = cors({
   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
   maxAge: 86400,
 });
+// Этого достаточно: CORS обрабатывает и preflight OPTIONS для всех маршрутов.
 app.use(allowCrossOrigin);
-app.options("*", allowCrossOrigin);
 app.use(express.json());
 app.get("/health", (_, res) => res.status(200).json({ ok: true }));
 app.get("/api/health", (_, res) => res.status(200).json({ ok: true }));
@@ -246,6 +246,23 @@ db.serialize(() => {
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       FOREIGN KEY(thread_id) REFERENCES chat_threads(id) ON DELETE CASCADE,
       FOREIGN KEY(sender_id) REFERENCES users(id)
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS certificates (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      cert_name TEXT NOT NULL,
+      amount INTEGER NOT NULL,
+      emoji TEXT,
+      from_name TEXT,
+      to_name TEXT,
+      message TEXT,
+      delivery TEXT,
+      email TEXT,
+      wishlist_name TEXT,
+      wishlist_link TEXT,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
   `);
 
@@ -628,45 +645,105 @@ app.post("/api/orders", auth, (req, res) => {
     return res.status(400).json({ error: "Missing order_date or tariff" });
   }
 
-  db.get(
-    `SELECT u.id
+  // Выбираем помощницу с учётом лимитов по тарифам на день
+  const day = new Date(order_date);
+  if (isNaN(day.getTime())) {
+    return res.status(400).json({ error: "Bad order_date" });
+  }
+  const dayStr = day.toISOString().slice(0, 10); // YYYY-MM-DD
+
+  db.all(
+    `SELECT u.id AS helper_id
      FROM users u
      LEFT JOIN profiles p ON p.user_id = u.id
      WHERE u.role = 'helper'
-     ORDER BY COALESCE(p.on_duty, 0) DESC, u.id ASC
-     LIMIT 1`,
+     ORDER BY COALESCE(p.on_duty, 0) DESC, u.id ASC`,
     [],
-    (pickErr, helperRow) => {
+    (pickErr, helpers) => {
       if (pickErr) return res.status(500).json({ error: "DB error" });
-      const helperId = helperRow ? helperRow.id : null;
-      db.run(
-        `INSERT INTO orders (client_id, helper_id, status, order_date, tariff, services, important)
-         VALUES (?, ?, 'active', ?, ?, ?, ?)`,
-        [
-          req.user.sub,
-          helperId,
-          order_date,
-          tariff,
-          services || "",
-          important || ""
-        ],
-        function onInsert(err) {
-          if (err) return res.status(500).json({ error: "Create order error" });
-          const oid = this.lastID;
-          db.get(`SELECT name FROM users WHERE id = ?`, [req.user.sub], (gErr, crow) => {
-            const clientName = crow && crow.name ? crow.name : `id ${req.user.sub}`;
-            sendAdminNotifyLater(
-              `[Тепло рядом] Новый заказ #${oid}`,
-              `Клиент: ${clientName} (id ${req.user.sub})
+      if (!helpers || !helpers.length) {
+        return res.status(503).json({ error: "Нет доступных помощниц" });
+      }
+
+      const helpersIds = helpers.map((h) => h.helper_id);
+      const placeholders = helpersIds.map(() => "?").join(",");
+
+      db.all(
+        `SELECT helper_id, tariff, COUNT(*) AS n
+         FROM orders
+         WHERE helper_id IN (${placeholders})
+           AND status != 'cancelled'
+           AND date(order_date) = date(?)
+         GROUP BY helper_id, tariff`,
+        [...helpersIds, dayStr],
+        (capErr, rows) => {
+          if (capErr) return res.status(500).json({ error: "DB error" });
+
+          const capsByHelper = new Map();
+          (rows || []).forEach((r) => {
+            const hId = r.helper_id;
+            const t = String(r.tariff || "");
+            const entry = capsByHelper.get(hId) || { basic: 0, midLux: 0 };
+            if (t.includes("basic")) entry.basic += r.n;
+            else if (t.includes("medium") || t.includes("luxury")) entry.midLux += r.n;
+            capsByHelper.set(hId, entry);
+          });
+
+          const isBasic = String(tariff).includes("basic");
+          const isMidOrLux =
+            String(tariff).includes("medium") || String(tariff).includes("luxury");
+
+          let helperId = null;
+          for (const h of helpers) {
+            const hCaps = capsByHelper.get(h.helper_id) || { basic: 0, midLux: 0 };
+            if (isMidOrLux && hCaps.midLux >= 1) continue;
+            if (isBasic && hCaps.basic >= 2) continue;
+            helperId = h.helper_id;
+            break;
+          }
+
+          if (helperId == null) {
+            return res.status(409).json({
+              error:
+                "На выбранный день нет свободных помощниц для этого тарифа. Попробуйте другую дату или тариф.",
+            });
+          }
+
+          db.run(
+            `INSERT INTO orders (client_id, helper_id, status, order_date, tariff, services, important)
+             VALUES (?, ?, 'active', ?, ?, ?, ?)`,
+            [
+              req.user.sub,
+              helperId,
+              order_date,
+              tariff,
+              services || "",
+              important || "",
+            ],
+            function onInsert(err) {
+              if (err) return res.status(500).json({ error: "Create order error" });
+              const oid = this.lastID;
+              db.get(
+                `SELECT name FROM users WHERE id = ?`,
+                [req.user.sub],
+                (gErr, crow) => {
+                  const clientName =
+                    crow && crow.name ? crow.name : `id ${req.user.sub}`;
+                  sendAdminNotifyLater(
+                    `[Тепло рядом] Новый заказ #${oid}`,
+                    `Клиент: ${clientName} (id ${req.user.sub})
 Номер заказа: ${oid}
 Дата встречи: ${order_date}
 Тариф: ${tariff}
 Услуги: ${services || "—"}
 Важное: ${important || "—"}
 Помощница (id): ${helperId != null ? helperId : "не назначена"}`
-            );
-          });
-          return res.json({ ok: true, order_id: oid });
+                  );
+                }
+              );
+              return res.json({ ok: true, order_id: oid });
+            }
+          );
         }
       );
     }
@@ -1269,6 +1346,65 @@ app.post("/api/admin/chat/threads/:id/messages", adminAuth, (req, res) => {
       return res.json({ ok: true, id: this.lastID });
     }
   );
+});
+
+/* ── Certificates API (подарочные сертификаты) ── */
+app.post("/api/certificates", (req, res) => {
+  try {
+    const {
+      cert_name,
+      amount,
+      emoji,
+      from_name,
+      to_name,
+      message,
+      delivery,
+      email,
+      wishlist_name,
+      wishlist_link,
+    } = req.body || {};
+    const price = Number(amount);
+    if (!cert_name || !Number.isFinite(price) || price < 0) {
+      return res.status(400).json({ error: "Некорректные данные сертификата" });
+    }
+    db.run(
+      `INSERT INTO certificates
+       (cert_name, amount, emoji, from_name, to_name, message, delivery, email, wishlist_name, wishlist_link)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        String(cert_name).trim(),
+        Math.round(price),
+        emoji != null ? String(emoji).trim() || null : null,
+        from_name != null ? String(from_name).trim() || null : null,
+        to_name != null ? String(to_name).trim() || null : null,
+        message != null ? String(message).trim() || null : null,
+        delivery != null ? String(delivery).trim() || null : null,
+        email != null ? String(email).trim() || null : null,
+        wishlist_name != null ? String(wishlist_name).trim() || null : null,
+        wishlist_link != null ? String(wishlist_link).trim() || null : null,
+      ],
+      function (err) {
+        if (err) {
+          console.error("[cert] insert:", err.message);
+          return res.status(500).json({ error: "DB error" });
+        }
+        const id = this.lastID;
+        sendAdminNotifyLater(
+          "[Тепло рядом] Новый подарочный сертификат #" + id,
+          `Название: ${String(cert_name).trim()}
+Сумма: ${Math.round(price)} ₽
+От кого: ${from_name || "—"}
+Кому: ${to_name || "—"}
+Способ вручения: ${delivery || "—"}
+Email получателя: ${email || "—"}
+Вишлист: ${wishlist_name || "—"}${wishlist_link ? " (" + wishlist_link + ")" : ""}`
+        );
+        return res.json({ ok: true, certificate_id: id });
+      }
+    );
+  } catch (_) {
+    return res.status(500).json({ error: "Unexpected error" });
+  }
 });
 
 /* Статика после всех /api/* — иначе в редких конфигурациях запросы к API могут отдавать 404 */
