@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const dns = require("dns");
 const sqlite3 = require("sqlite3").verbose();
+const { Pool } = require("pg");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
@@ -38,6 +39,19 @@ const DB_PATH = process.env.DB_PATH || path.join(__dirname, "app.db");
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || "traceur95@mail.ru";
 const ADMIN_SEED_EMAIL = (process.env.ADMIN_EMAIL || "traceur95@mail.ru").toLowerCase();
 const MAIL_NOTIFY_CHAT = String(process.env.MAIL_NOTIFY_CHAT || "1") === "1";
+
+const pgPool = (() => {
+  const url = process.env.DATABASE_URL;
+  if (!url) {
+    console.warn("[pg] DATABASE_URL не задан — Postgres отключён");
+    return null;
+  }
+  const pool = new Pool({ connectionString: url, max: 10 });
+  pool.on("error", (err) => {
+    console.error("[pg] idle client error:", err);
+  });
+  return pool;
+})();
 
 function notifyRecipients() {
   return String(NOTIFY_EMAIL || "")
@@ -151,6 +165,18 @@ app.use(allowCrossOrigin);
 app.use(express.json());
 app.get("/health", (_, res) => res.status(200).json({ ok: true }));
 app.get("/api/health", (_, res) => res.status(200).json({ ok: true }));
+app.get("/api/pg-health", async (_, res) => {
+  if (!pgPool) {
+    return res.status(500).json({ ok: false, error: "pg disabled (no DATABASE_URL)" });
+  }
+  try {
+    const { rows } = await pgPool.query("SELECT 1 AS ok");
+    return res.json({ ok: rows[0] && rows[0].ok === 1 });
+  } catch (e) {
+    console.error("[pg] health error:", e.message);
+    return res.status(500).json({ ok: false, error: "pg error" });
+  }
+});
 
 db.serialize(() => {
   db.run(`
